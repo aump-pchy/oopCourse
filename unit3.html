@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หน่วยที่ 3 คำสั่งเลือกทำ if และ switch | Java ฉบับลงมือทำ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Mitr:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html"><span data-javy></span>Java ฉบับลงมือทำ</a>
+  <button class="icon-btn" type="button" data-theme-toggle>โหมดมืด</button>
+</header>
+
+<div class="wrap unit-layout">
+  <nav class="toc" aria-label="สารบัญหน่วยที่ 3">
+    <details open>
+      <summary>ในหน่วยนี้</summary>
+      <ol>
+        <li><a href="#cond">เงื่อนไขคืออะไร</a></li>
+        <li><a href="#trace">ดูเส้นทางโปรแกรม</a></li>
+        <li><a href="#demo">ทำตามครู</a></li>
+        <li><a href="#traps">กับดักที่เจอบ่อย</a></li>
+        <li><a href="#lab1">Lab 1 บวก ลบ ศูนย์</a></li>
+        <li><a href="#lab2">Lab 2 switch เกรด</a></li>
+        <li><a href="#game">งาน: เกมทายตัวเลข</a></li>
+        <li><a href="#bug">ภารกิจหาบั๊ก</a></li>
+        <li><a href="#exit">Exit Ticket</a></li>
+      </ol>
+    </details>
+  </nav>
+
+  <main class="content">
+    <section class="unit-hero">
+      <h1>หน่วยที่ 3 คำสั่งเลือกทำ if และ switch</h1>
+      <p class="lead">สอนให้โปรแกรมตัดสินใจเองได้ ถ้าเงื่อนไขเป็นจริงทำทางหนึ่ง ถ้าเป็นเท็จทำอีกทาง จบหน่วยนี้เราจะได้เกมทายตัวเลขที่เล่นได้จริง</p>
+      <div class="goal">
+        <h3>จบหน่วยนี้แล้วทำได้</h3>
+        <ul>
+          <li>เขียนเงื่อนไขและใช้ if, if-else, else-if และ if ซ้อนได้ถูกที่</li>
+          <li>ใช้ switch ทั้งแบบมี break และแบบลูกศร</li>
+          <li>ใช้ debugger ไล่ดูว่าโปรแกรมเลือกทำบรรทัดไหน</li>
+          <li>สร้างเกมทายตัวเลขแบบ GUI ด้วยตัวเอง</li>
+        </ul>
+      </div>
+      <ol class="phases" aria-label="ลำดับในคาบ">
+        <li><strong>ทำตามครู</strong><small>พิมพ์ตามทีละคำสั่ง</small></li>
+        <li><strong>Lab พาทำ</strong><small>Lab 1 และ Lab 2</small></li>
+        <li><strong>งานเดี่ยว</strong><small>เกมทายตัวเลข</small></li>
+        <li><strong>Exit Ticket</strong><small>ก่อนออกจากคาบ</small></li>
+      </ol>
+    </section>
+
+    <section id="cond">
+      <h2>เงื่อนไขคืออะไร</h2>
+      <p>เงื่อนไขคือนิพจน์ที่ได้ผลเป็น <code>true</code> หรือ <code>false</code> เท่านั้น สร้างจากตัวดำเนินการเปรียบเทียบและตรรกะที่เรียนในหน่วย 2</p>
+      <div class="table-scroll"><table>
+        <thead><tr><th>เงื่อนไข</th><th>ถามว่า</th></tr></thead>
+        <tbody>
+          <tr><td><code>a &lt;= 0</code></td><td>a เป็นศูนย์หรือติดลบไหม</td></tr>
+          <tr><td><code>n % 2 == 1</code></td><td>n เป็นเลขคี่ไหม (เศษจากหาร 2 เท่ากับ 1)</td></tr>
+          <tr><td><code>score &gt;= 50 &amp;&amp; score &lt;= 100</code></td><td>คะแนนอยู่ในช่วง 50 ถึง 100 ไหม</td></tr>
+          <tr><td><code>name.equals("Aump")</code></td><td>ข้อความตรงกับ Aump ไหม</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="trace">
+      <h2>ดูเส้นทางโปรแกรม</h2>
+      <p>ใส่คะแนนแล้วดูว่าโปรแกรมแต่ละแบบเดินผ่านบรรทัดไหน ลองค่าขอบ 49, 50, 51 และ 79, 80</p>
+      <div class="lab">
+        <h3>ห้องทดลองเงื่อนไข</h3>
+        <div class="row">
+          <label>score <input type="number" id="trace-score" value="49" style="width:6rem"></label>
+          <button class="btn ghost" type="button" data-score="49">49</button>
+          <button class="btn ghost" type="button" data-score="50">50</button>
+          <button class="btn ghost" type="button" data-score="51">51</button>
+          <button class="btn ghost" type="button" data-score="79">79</button>
+          <button class="btn ghost" type="button" data-score="80">80</button>
+        </div>
+        <div class="legend"><span class="l-check">ตรวจเงื่อนไข</span><span class="l-run">บรรทัดที่ทำงาน</span></div>
+        <h3>if</h3>
+        <div data-trace="if"><div class="code trace"><pre></pre></div><div class="out" aria-live="polite"></div></div>
+        <h3>if-else</h3>
+        <div data-trace="ifelse"><div class="code trace"><pre></pre></div><div class="out" aria-live="polite"></div></div>
+        <h3>else-if หลายทาง (ตัดเกรด)</h3>
+        <div data-trace="ladder"><div class="code trace"><pre></pre></div><div class="out" aria-live="polite"></div></div>
+      </div>
+      <p>สังเกตว่า else-if ตรวจจากบนลงล่าง <strong>เจอเงื่อนไขที่จริงข้อแรกแล้วหยุดทันที</strong> ที่เหลือไม่ถูกตรวจเลย ลำดับเงื่อนไขจึงสำคัญ</p>
+    </section>
+
+    <section id="demo">
+      <span class="phase-tag">ช่วงที่ 1 ทำตามครู</span>
+      <h2>ทำตามครูทีละคำสั่ง</h2>
+      <p>เปิดโปรเจกต์ใน NetBeans สร้าง package <code>th.ac.loeitech.unit3</code> แล้วพิมพ์ตามครูทีละขั้น พิมพ์เองนะ ไม่คัดลอก มือจะจำ syntax ได้เร็วกว่า</p>
+
+      <div class="demo-step">
+        <h3>ขั้น 1 คำสั่ง if</h3>
+        <p>สร้างคลาส <code>SampleIf</code> ใช้ <code>JOptionPane</code> ทำกล่องรับค่าและกล่องข้อความแบบง่าย</p>
+        <div class="code"><pre><code>package th.ac.loeitech.unit3;
+
+import javax.swing.JOptionPane;
+
+public class SampleIf {
+    public static void main(String[] args) {
+        String input = JOptionPane.showInputDialog("กรอกคะแนน");
+        int score = Integer.parseInt(input);
+
+        if (score &gt;= 50) {
+            JOptionPane.showMessageDialog(null, "ผ่าน");
+        }
+        JOptionPane.showMessageDialog(null, "จบโปรแกรม");
+    }
+}</code></pre></div>
+        <p>รัน 3 รอบ ป้อน 49, 50, 51 แล้วจดว่ารอบไหนเห็นคำว่า "ผ่าน" (<code>null</code> หมายถึงกล่องข้อความไม่มีหน้าต่างแม่)</p>
+      </div>
+
+      <div class="demo-step">
+        <h3>ขั้น 2 คำสั่ง if-else</h3>
+        <p>เพิ่ม <code>else</code> ให้มีทางไปเมื่อเงื่อนไขเป็นเท็จ</p>
+        <div class="code"><pre><code>if (score &gt;= 50) {
+    JOptionPane.showMessageDialog(null, "ผ่าน");
+} else {
+    JOptionPane.showMessageDialog(null, "ไม่ผ่าน");
+}</code></pre></div>
+      </div>
+
+      <div class="demo-step">
+        <h3>ขั้น 3 else-if หลายทาง</h3>
+        <p>ตัดเกรดจากคะแนน เรียงเงื่อนไขจากมากไปน้อย ถ้าสลับลำดับ ทุกคนจะได้ D หมด ลองดูสิ</p>
+        <div class="code"><pre><code>String grade;
+if (score &gt;= 80) {
+    grade = "A";
+} else if (score &gt;= 70) {
+    grade = "B";
+} else if (score &gt;= 60) {
+    grade = "C";
+} else if (score &gt;= 50) {
+    grade = "D";
+} else {
+    grade = "F";
+}
+JOptionPane.showMessageDialog(null, "เกรด " + grade);</code></pre></div>
+      </div>
+
+      <div class="demo-step">
+        <h3>ขั้น 4 if ซ้อน (nested if)</h3>
+        <p>if ซ้อนคือ if อยู่<strong>ข้างใน</strong> if อีกตัว ใช้เมื่อต้องผ่านด่านแรกก่อนถึงจะตัดสินด่านต่อไป ต่างจาก else-if ที่เป็นทางเลือกเรียงกัน</p>
+        <div class="code"><pre><code>if (score &gt;= 0 &amp;&amp; score &lt;= 100) {
+    if (score &gt;= 50) {
+        JOptionPane.showMessageDialog(null, "ผ่าน");
+    } else {
+        JOptionPane.showMessageDialog(null, "ไม่ผ่าน");
+    }
+} else {
+    JOptionPane.showMessageDialog(null, "คะแนนต้องอยู่ระหว่าง 0–100");
+}</code></pre></div>
+        <p>ทดสอบด้วย -5, 30, 75, 120</p>
+      </div>
+
+      <div class="demo-step">
+        <h3>ขั้น 5 switch แบบมี break</h3>
+        <p>ใช้เมื่อเทียบตัวแปรตัวเดียวกับค่าที่แน่นอนหลายค่า ใช้ได้กับ int, char, String และ enum</p>
+        <div class="code"><pre><code>int level = Integer.parseInt(JOptionPane.showInputDialog("เลือกระดับ 1–3"));
+switch (level) {
+    case 1:
+        JOptionPane.showMessageDialog(null, "ง่าย");
+        break;
+    case 2:
+        JOptionPane.showMessageDialog(null, "ปานกลาง");
+        break;
+    case 3:
+        JOptionPane.showMessageDialog(null, "ยาก");
+        break;
+    default:
+        JOptionPane.showMessageDialog(null, "ไม่มีระดับนี้");
+}</code></pre></div>
+        <div class="lab">
+          <h3>ลองเอา break ออก</h3>
+          <div class="row">
+            <label>level <select id="sw-level"><option>1</option><option>2</option><option>3</option><option>9</option></select></label>
+            <label><input type="checkbox" id="sw-break" checked> มี break</label>
+          </div>
+          <div class="code trace"><pre id="sw-code"></pre></div>
+          <div class="out" id="sw-out" aria-live="polite"></div>
+        </div>
+        <p>ไม่มี <code>break</code> โปรแกรมจะทำ case ถัดไปต่อเรื่อย ๆ เรียกว่า <strong>fall-through</strong> เป็นบั๊กอันดับหนึ่งของ switch แบบเดิม</p>
+      </div>
+
+      <div class="demo-step">
+        <h3>ขั้น 6 switch แบบลูกศร (Java 14+)</h3>
+        <p>แบบใหม่ใช้ <code>-&gt;</code> ไม่ต้องมี break และไม่ตกทะลุ ใช้เป็นนิพจน์ที่คืนค่าได้เลย รวมหลายค่าใน case เดียวด้วยจุลภาค</p>
+        <div class="code"><pre><code>String level = JOptionPane.showInputDialog("เลือกระดับ: easy, normal, hard");
+int maxNumber = switch (level) {
+    case "easy" -&gt; 10;
+    case "normal" -&gt; 50;
+    case "hard" -&gt; 100;
+    default -&gt; 10;
+};
+JOptionPane.showMessageDialog(null, "สุ่มเลข 1–" + maxNumber);</code></pre></div>
+        <div class="note"><p>ข้อสอบและโค้ดเก่ายังใช้แบบมี break เยอะ ต้องอ่านเป็นทั้งสองแบบ แต่ถ้าเขียนใหม่เอง แนะนำแบบลูกศร</p></div>
+      </div>
+    </section>
+
+    <section id="traps">
+      <h2>กับดักที่เจอบ่อย</h2>
+      <p>ลองเดาก่อนว่าแต่ละโค้ดผิดตรงไหน แล้วค่อยเปิดดู</p>
+      <details class="reveal">
+        <summary><code>if (score &gt;= 50); { show("ผ่าน"); }</code></summary>
+        <p>มี <code>;</code> หลังวงเล็บ if ทำให้ if จบตรงนั้น บล็อก <code>{ }</code> ข้างหลังจึงทำงานทุกครั้ง ไม่ว่าคะแนนเท่าไร คอมไพล์ผ่านด้วย จึงหายาก</p>
+      </details>
+      <details class="reveal">
+        <summary>if ไม่ใส่ปีกกา แล้วเพิ่มคำสั่งบรรทัดที่สอง</summary>
+        <div class="code"><pre><code>if (score &gt;= 50)
+    show("ผ่าน");
+    show("ได้เกียรติบัตร");  // บรรทัดนี้ทำงานทุกครั้ง!</code></pre></div>
+        <p>ไม่มี <code>{ }</code> if คุมแค่คำสั่งถัดไปคำสั่งเดียว การย่อหน้าไม่มีผลกับ Java ใส่ปีกกาทุกครั้งจะปลอดภัยที่สุด</p>
+      </details>
+      <details class="reveal">
+        <summary><code>if (answer == "yes")</code></summary>
+        <p>String ต้องเทียบด้วย <code>answer.equals("yes")</code> การใช้ <code>==</code> บางครั้งได้ผลถูกโดยบังเอิญ ทำให้บั๊กโผล่ทีหลัง</p>
+      </details>
+      <details class="reveal">
+        <summary>กด Cancel ที่กล่องรับค่า แล้วโปรแกรมพัง</summary>
+        <p><code>showInputDialog</code> คืนค่า <code>null</code> เมื่อกด Cancel แล้ว <code>parseInt(null)</code> จะพัง ป้องกันได้ด้วย <code>if (input == null || input.isBlank())</code> ก่อนแปลง เรื่องจัดการ error แบบเต็มจะเรียนในหน่วย Exception</p>
+      </details>
+    </section>
+
+    <section id="lab1">
+      <span class="phase-tag">ช่วงที่ 2 Lab พาทำ</span>
+      <h2>Lab 1 ตรวจสอบจำนวนบวก ลบ ศูนย์</h2>
+      <p>ทำไปพร้อมครู ฝึกใช้ debugger ดูว่าโปรแกรมเลือกทำบรรทัดไหน</p>
+      <ol>
+        <li>สร้าง JFrame Form ชื่อ <code>SignChecker</code> ใน package <code>th.ac.loeitech.unit3</code></li>
+        <li>วาง Label ข้อความ "กรอกจำนวนเต็ม", TextField และปุ่ม "ตรวจสอบ"</li>
+        <li><strong>ดับเบิลคลิกที่ปุ่ม</strong> NetBeans จะสร้างเมธอด <code>jButton1ActionPerformed</code> ให้ พิมพ์โค้ดด้านล่าง</li>
+      </ol>
+      <div class="code"><pre><code>private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    int i = Integer.parseInt(jTextField1.getText());
+    if (i == 0) {
+        JOptionPane.showMessageDialog(this, "ค่าที่ป้อนเป็นศูนย์");
+    } else if (i &lt; 0) {
+        JOptionPane.showMessageDialog(this, "ค่าที่ป้อนเป็นจำนวนเต็มลบ");
+    } else if (i &gt; 0) {
+        JOptionPane.showMessageDialog(this, "ค่าที่ป้อนเป็นจำนวนเต็มบวก");
+    }
+}</code></pre></div>
+      <p>ถ้า NetBeans ขีดเส้นแดงที่ <code>JOptionPane</code> ให้กด Alt+Enter (Mac: Option+Enter) แล้วเลือก Add import</p>
+      <ol start="4">
+        <li>คลิกที่เลขบรรทัด <code>int i = ...</code> ให้ขึ้นสี่เหลี่ยมแดง นี่คือ <strong>breakpoint</strong></li>
+        <li>เลือก Debug > Debug File ป้อนตัวเลข แล้วกดตรวจสอบ โปรแกรมจะหยุดที่ breakpoint</li>
+        <li>กด <code>F8</code> (Step Over) ทีละครั้ง ดูว่าแถบสีเขียวกระโดดไปบรรทัดไหน (MacBook กด fn+F8)</li>
+      </ol>
+      <div class="table-scroll"><table>
+        <thead><tr><th>ค่าที่ป้อน</th><th>บรรทัดที่โปรแกรมเลือกทำ</th><th>ทำไม</th></tr></thead>
+        <tbody>
+          <tr><td>-1</td><td>จดเอง</td><td>จดเอง</td></tr>
+          <tr><td>0</td><td>จดเอง</td><td>จดเอง</td></tr>
+          <tr><td>1</td><td>จดเอง</td><td>จดเอง</td></tr>
+        </tbody>
+      </table></div>
+      <details class="reveal">
+        <summary>คำถามชวนคิด: <code>else if (i &gt; 0)</code> ตัวสุดท้ายจำเป็นไหม</summary>
+        <p>ไม่จำเป็น ถ้าไม่ใช่ 0 และไม่ติดลบ ก็ต้องเป็นบวกแน่นอน เปลี่ยนเป็น <code>else</code> เฉย ๆ ได้ โค้ดสั้นลงและไม่ต้องตรวจซ้ำ</p>
+      </details>
+    </section>
+
+    <section id="lab2">
+      <h2>Lab 2 แปลงเกรดเป็นข้อความด้วย switch</h2>
+      <p>สร้าง JFrame Form ชื่อ <code>GradeText</code> มี TextField รับเกรด 0–4, ปุ่ม "แปลง" และ Label แสดงผล</p>
+      <div class="code"><pre><code>private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    int grade = Integer.parseInt(jTextField1.getText());
+    String text;
+    switch (grade) {
+        case 4:
+            text = "ดีเยี่ยม";
+            break;
+        case 3:
+            text = "ดี";
+            break;
+        case 2:
+            text = "พอใช้";
+            break;
+        case 1:
+            text = "ผ่าน";
+            break;
+        case 0:
+            text = "ไม่ผ่าน";
+            break;
+        default:
+            text = "เกรดต้องอยู่ระหว่าง 0–4";
+    }
+    jLabel2.setText(text);
+}</code></pre></div>
+      <p><strong>ต่อยอดด้วยตัวเอง:</strong> เขียนส่วน switch ใหม่เป็นแบบลูกศร <code>String text = switch (grade) { ... };</code> ให้ผลเหมือนเดิม</p>
+      <details class="reveal">
+        <summary>ดูเฉลยแบบลูกศร</summary>
+        <div class="code"><pre><code>String text = switch (grade) {
+    case 4 -&gt; "ดีเยี่ยม";
+    case 3 -&gt; "ดี";
+    case 2 -&gt; "พอใช้";
+    case 1 -&gt; "ผ่าน";
+    case 0 -&gt; "ไม่ผ่าน";
+    default -&gt; "เกรดต้องอยู่ระหว่าง 0–4";
+};</code></pre></div>
+      </details>
+    </section>
+
+    <section id="game">
+      <span class="phase-tag">ช่วงที่ 3 งานเดี่ยว</span>
+      <h2>งาน: เกมทายตัวเลข</h2>
+      <p>ทำเองคนเดียว ลองเล่นตัวอย่างด้านล่างก่อน แล้วสร้างให้ทำงานแบบเดียวกันใน NetBeans</p>
+      <ul>
+        <li>สุ่มตัวเลข 1–10 เป็นคำตอบ</li>
+        <li>ทายได้ 3 ครั้ง แต่ละครั้งบอกว่ามากกว่า น้อยกว่า หรือถูกต้อง พร้อมจำนวนครั้งที่เหลือ</li>
+        <li>ทายผิดครบ 3 ครั้งให้เฉลยทันที และเมื่อเกมจบ (ถูกหรือหมดสิทธิ์) ต้องทายต่อไม่ได้</li>
+      </ul>
+      <div class="lab" id="game-demo">
+        <h3>ตัวอย่างที่ต้องทำให้ได้</h3>
+        <div class="game">
+          <div class="tries" aria-label="จำนวนครั้งที่เหลือ"><i></i><i></i><i></i></div>
+          <div class="row">
+            <input type="text" id="g-in" inputmode="numeric" aria-label="ตัวเลขที่ทาย" style="width:7rem">
+            <button class="btn" type="button" id="g-btn">ทาย</button>
+            <button class="btn ghost" type="button" id="g-new">เกมใหม่</button>
+          </div>
+          <div class="out" id="g-msg" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <h3>ขั้นตอนและเกณฑ์ตรวจ</h3>
+      <p>ติ๊กเมื่อทำเสร็จแต่ละขั้น ขั้นที่ 4 ให้หยุดเรียกครูตรวจก่อนทำต่อ</p>
+      <div class="progress" data-progress="unit3"><span></span></div>
+      <ul class="checklist" data-checklist="unit3">
+        <li><input type="checkbox" id="u3c1"><label for="u3c1">1. สร้าง JFrame Form ชื่อ <code>GuessGame</code> ใน package <code>th.ac.loeitech.unit3</code></label></li>
+        <li><input type="checkbox" id="u3c2"><label for="u3c2">2. วาง Label โจทย์, TextField, ปุ่ม "ทาย" และ Label แสดงจำนวนครั้งที่เหลือ</label></li>
+        <li><input type="checkbox" id="u3c3"><label for="u3c3">3. ประกาศ field เก็บคำตอบที่สุ่มได้ 1–10 (ไว้ในคลาส นอกเมธอด)</label></li>
+        <li><input type="checkbox" id="u3c4"><label for="u3c4">4. ประกาศ field เก็บจำนวนครั้งที่เหลือ เริ่มที่ 3</label></li>
+      </ul>
+      <p class="teacher-stop">หยุด เรียกครูตรวจขั้น 1–4</p>
+      <ul class="checklist" data-checklist="unit3">
+        <li><input type="checkbox" id="u3c5"><label for="u3c5">5. ดับเบิลคลิกปุ่ม "ทาย" แล้วอ่านค่าจาก TextField แปลงเป็น int</label></li>
+        <li><input type="checkbox" id="u3c6"><label for="u3c6">6. ถ้ายังมีสิทธิ์ทาย: เทียบค่าที่ทายกับคำตอบ แจ้งมากกว่า น้อยกว่า หรือถูกต้อง</label></li>
+        <li><input type="checkbox" id="u3c7"><label for="u3c7">7. ทายผิดแล้วลดจำนวนครั้งลง 1 และแสดงจำนวนครั้งที่เหลือใน Label</label></li>
+        <li><input type="checkbox" id="u3c8"><label for="u3c8">8. ผิดครบ 3 ครั้งเฉลยทันที และเมื่อเกมจบ ปิดปุ่มด้วย <code>jButton1.setEnabled(false)</code></label></li>
+        <li><input type="checkbox" id="u3c9"><label for="u3c9">9. ทดสอบครบ 3 กรณี: ถูกครั้งแรก, ถูกครั้งที่ 3, ผิดครบ 3 ครั้ง</label></li>
+        <li><input type="checkbox" id="u3c10"><label for="u3c10">10. บันทึก แคปหน้าจอ 3 กรณี และ zip โปรเจกต์ส่ง</label></li>
+      </ul>
+
+      <h3>คำใบ้ (เปิดเมื่อติดจริง ๆ)</h3>
+      <details class="reveal">
+        <summary>คำใบ้ 1: สุ่มเลข 1–10 ยังไง</summary>
+        <p><code>(int) (Math.random() * 10)</code> ได้ 0–9 ต้อง <code>+ 1</code> ถึงจะได้ 1–10 หรือใช้ <code>new java.util.Random().nextInt(1, 11)</code> ซึ่งตัวเลขหลังไม่รวมในผลสุ่ม</p>
+      </details>
+      <details class="reveal">
+        <summary>คำใบ้ 2: โครงของเงื่อนไข</summary>
+        <div class="code"><pre><code>if (ยังมีสิทธิ์ทาย) {
+    if (ทายมากกว่าคำตอบ) {
+        // ลดสิทธิ์ แจ้งว่ามากกว่า
+    } else if (ทายน้อยกว่าคำตอบ) {
+        // ลดสิทธิ์ แจ้งว่าน้อยกว่า
+    } else {
+        // ถูกต้อง จบเกม
+    }
+    // ถ้าสิทธิ์เหลือ 0 และยังไม่ถูก → เฉลย จบเกม
+}</code></pre></div>
+      </details>
+      <details class="reveal">
+        <summary>คำใบ้ 3: ทำไม field ต้องอยู่นอกเมธอด</summary>
+        <p>ถ้าประกาศไว้ในเมธอดของปุ่ม ทุกครั้งที่กดจะสุ่มคำตอบใหม่และสิทธิ์จะกลับเป็น 3 ใหม่ทุกครั้ง เพราะ local variable หายไปเมื่อเมธอดจบ (ทวนหน่วย 2 เรื่องขอบเขตตัวแปร)</p>
+      </details>
+      <div class="note">
+        <p><strong>งานเสริม</strong> เพิ่มปุ่ม "เกมใหม่" ที่สุ่มคำตอบใหม่และคืนสิทธิ์ และเพิ่ม JComboBox เลือกระดับ ใช้ switch กำหนดช่วงและจำนวนครั้ง: ง่าย 1–10 ทาย 3 ครั้ง, ปานกลาง 1–50 ทาย 5 ครั้ง, ยาก 1–100 ทาย 7 ครั้ง</p>
+      </div>
+    </section>
+
+    <section id="bug">
+      <h2>ภารกิจหาบั๊ก</h2>
+      <p>เพื่อนเขียนเกมแล้วส่งมาให้ช่วยดู โค้ดนี้คอมไพล์ผ่าน แต่มีบั๊กเชิงตรรกะ 2 จุด หาให้เจอก่อนเปิดเฉลย</p>
+      <div class="code"><pre><code>private int answer = (int) (Math.random() * 10);
+private int triesLeft = 3;
+
+private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    int guess = Integer.parseInt(jTextField1.getText());
+    if (triesLeft &lt;= 0) {
+        if (guess &gt; answer) {
+            triesLeft--;
+            JOptionPane.showMessageDialog(this, "มากกว่าคำตอบ เหลือ " + triesLeft + " ครั้ง");
+        } else if (guess &lt; answer) {
+            triesLeft--;
+            JOptionPane.showMessageDialog(this, "น้อยกว่าคำตอบ เหลือ " + triesLeft + " ครั้ง");
+        } else {
+            JOptionPane.showMessageDialog(this, "ถูกต้อง!");
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "หมดสิทธิ์ทายแล้ว คำตอบคือ " + answer);
+    }
+}</code></pre></div>
+      <details class="reveal">
+        <summary>เฉลยบั๊ก</summary>
+        <p><strong>บั๊ก 1:</strong> สุ่มได้ 0–9 ไม่ใช่ 1–10 เลข 10 ไม่มีวันเป็นคำตอบ และอาจได้ 0 แก้เป็น <code>(int) (Math.random() * 10) + 1</code></p>
+        <p><strong>บั๊ก 2:</strong> เงื่อนไขกลับด้าน <code>triesLeft &lt;= 0</code> ต้องเป็น <code>triesLeft &gt; 0</code> ไม่งั้นกดครั้งแรกก็ขึ้นหมดสิทธิ์ทันที</p>
+        <p><strong>แถม:</strong> ผิดครั้งที่ 3 ยังไม่เฉลย ต้องกดอีกรอบถึงจะเห็น และทายถูกแล้วยังกดต่อได้</p>
+      </details>
+    </section>
+
+    <section id="exit">
+      <span class="phase-tag">ช่วงที่ 4</span>
+      <h2>Exit Ticket</h2>
+      <p>ทำก่อนออกจากคาบ ใช้เวลาประมาณ 3 นาที กดตรวจแล้วคัดลอกผลส่งครู</p>
+      <form class="exit" data-exit="unit3" data-title="หน่วยที่ 3" data-form-url="" novalidate>
+        <div class="who">
+          <label>ชื่อ-สกุล<input type="text" name="name" autocomplete="name"></label>
+          <label>รหัสนักศึกษา<input type="text" name="sid" inputmode="numeric"></label>
+          <label>ห้อง<input type="text" name="room"></label>
+        </div>
+
+        <fieldset data-correct="b" data-explain="50 &gt; 50 เป็นเท็จ จึงไปทาง else ถ้าอยากให้ 50 ผ่านต้องใช้ &gt;=">
+          <legend>1. score = 50 แล้วโค้ด <code>if (score &gt; 50) { A } else { B }</code> ทำอะไร</legend>
+          <label class="opt"><input type="radio" name="q1" value="a">ทำ A</label>
+          <label class="opt"><input type="radio" name="q1" value="b">ทำ B</label>
+          <label class="opt"><input type="radio" name="q1" value="c">ทำทั้ง A และ B</label>
+          <label class="opt"><input type="radio" name="q1" value="d">ไม่ทำอะไรเลย</label>
+        </fieldset>
+
+        <fieldset data-correct="b" data-explain="75 ไม่ถึง 80 จึงไปตรวจข้อถัดไป 75 &gt;= 70 เป็นจริง ได้ B แล้วหยุด">
+          <legend>2. score = 75 ตัดเกรดด้วย else-if: &gt;= 80 ได้ A, &gt;= 70 ได้ B, &gt;= 60 ได้ C จะได้เกรดอะไร</legend>
+          <label class="opt"><input type="radio" name="q2" value="a">A</label>
+          <label class="opt"><input type="radio" name="q2" value="b">B</label>
+          <label class="opt"><input type="radio" name="q2" value="c">C</label>
+          <label class="opt"><input type="radio" name="q2" value="d">ได้ทั้ง B และ C</label>
+        </fieldset>
+
+        <fieldset data-correct="c" data-explain="ไม่มี break จึงตกทะลุจาก case 1 ไปทำ case 2 ต่อ">
+          <legend>3. level = 1 และ switch มี <code>case 1: show("ง่าย");</code> ตามด้วย <code>case 2: show("ยาก");</code> โดยไม่มี break เลย จะแสดงอะไร</legend>
+          <label class="opt"><input type="radio" name="q3" value="a">ง่าย</label>
+          <label class="opt"><input type="radio" name="q3" value="b">ยาก</label>
+          <label class="opt"><input type="radio" name="q3" value="c">ง่าย แล้วตามด้วย ยาก</label>
+          <label class="opt"><input type="radio" name="q3" value="d">คอมไพล์ไม่ผ่าน</label>
+        </fieldset>
+
+        <fieldset data-correct="a" data-explain="Math.random() ได้ 0 ถึงน้อยกว่า 1 คูณ 10 ได้ 0 ถึง 9.99 แล้ว cast ตัดเศษได้ 0–9">
+          <legend>4. <code>(int) (Math.random() * 10)</code> สุ่มได้ค่าช่วงไหน</legend>
+          <label class="opt"><input type="radio" name="q4" value="a">0–9</label>
+          <label class="opt"><input type="radio" name="q4" value="b">1–10</label>
+          <label class="opt"><input type="radio" name="q4" value="c">0–10</label>
+          <label class="opt"><input type="radio" name="q4" value="d">1–9</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>5. วันนี้ได้เรียนรู้อะไร (1 ประโยค)</legend>
+          <textarea name="learned" rows="2"></textarea>
+        </fieldset>
+        <fieldset>
+          <legend>6. ยังสงสัยหรือติดขัดตรงไหน</legend>
+          <textarea name="muddy" rows="2"></textarea>
+        </fieldset>
+        <fieldset>
+          <legend>7. มั่นใจแค่ไหนว่าทำเกมทายตัวเลขเองได้ (1 = ยังไม่ได้เลย, 5 = สอนเพื่อนได้)</legend>
+          <div class="fist">
+            <label><input type="radio" name="fist" value="1">1</label>
+            <label><input type="radio" name="fist" value="2">2</label>
+            <label><input type="radio" name="fist" value="3">3</label>
+            <label><input type="radio" name="fist" value="4">4</label>
+            <label><input type="radio" name="fist" value="5">5</label>
+          </div>
+        </fieldset>
+
+        <button class="btn" type="submit">ตรวจคำตอบ</button>
+        <p class="form-error" role="alert"></p>
+        <div class="exit-result" hidden></div>
+      </form>
+      <p><a href="unit2.html">กลับไปทบทวนหน่วยที่ 2</a></p>
+    </section>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หน่วยที่ 1 ภาษาจาวาและเครื่องมือพัฒนา | Java ฉบับลงมือทำ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Mitr:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html"><span data-javy></span>Java ฉบับลงมือทำ</a>
+  <button class="icon-btn" type="button" data-theme-toggle>โหมดมืด</button>
+</header>
+
+<div class="wrap unit-layout">
+  <nav class="toc" aria-label="สารบัญหน่วยที่ 1">
+    <details open>
+      <summary>ในหน่วยนี้</summary>
+      <ol>
+        <li><a href="#what">Java คืออะไร</a></li>
+        <li><a href="#layers">JDK JRE JVM</a></li>
+        <li><a href="#flow">จาก .java สู่โปรแกรม</a></li>
+        <li><a href="#install">ติดตั้ง JDK 25</a></li>
+        <li><a href="#first">โปรแกรมแรก</a></li>
+        <li><a href="#netbeans">Apache NetBeans</a></li>
+        <li><a href="#gui">โปรแกรม GUI</a></li>
+        <li><a href="#check">เช็กความเข้าใจ</a></li>
+        <li><a href="#lab">Lab</a></li>
+        <li><a href="#exit">Exit Ticket</a></li>
+      </ol>
+    </details>
+  </nav>
+
+  <main class="content">
+    <section class="unit-hero">
+      <h1>หน่วยที่ 1 ภาษาจาวาและเครื่องมือพัฒนา</h1>
+      <p class="lead">ติดตั้งเครื่องมือให้พร้อม แล้วเขียนโปรแกรมแรกทั้งแบบ Console และแบบมีหน้าต่าง GUI</p>
+      <div class="goal">
+        <h3>จบหน่วยนี้แล้วทำได้</h3>
+        <ul>
+          <li>อธิบายความต่างของ JDK, JRE และ JVM</li>
+          <li>ติดตั้ง JDK 25 และ Apache NetBeans บน Windows หรือ macOS</li>
+          <li>คอมไพล์และรันโปรแกรมจาก Terminal และจาก NetBeans</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="what">
+      <h2>Java คืออะไร</h2>
+      <p>Java เป็นภาษาเชิงวัตถุที่ Sun Microsystems เปิดตัวในปี 1995 ปัจจุบัน Oracle ดูแลร่วมกับชุมชน OpenJDK ออกเวอร์ชันใหม่ทุก 6 เดือน และมีรุ่น LTS (ซัพพอร์ตระยะยาว) ทุก 2 ปี รุ่นที่เราใช้คือ <strong>Java 25 LTS</strong></p>
+      <p>เราเจอ Java ได้ในแอปธนาคาร แอป Android เกม Minecraft และระบบหลังบ้านขององค์กรใหญ่</p>
+      <div class="table-scroll"><table>
+        <thead><tr><th>จุดเด่น</th><th>หมายความว่า</th></tr></thead>
+        <tbody>
+          <tr><td>ฟรีและ open source</td><td>ดาวน์โหลด JDK ใช้ได้ไม่เสียเงิน</td></tr>
+          <tr><td>Write once, run anywhere</td><td>คอมไพล์ครั้งเดียว ไฟล์เดียวกันรันได้ทั้ง Windows, macOS, Linux</td></tr>
+          <tr><td>เชิงวัตถุ</td><td>โค้ดทุกอย่างอยู่ในคลาส ซึ่งเป็นหัวใจของวิชานี้</td></tr>
+          <tr><td>Garbage Collector</td><td>คืนหน่วยความจำที่ไม่ใช้แล้วให้อัตโนมัติ</td></tr>
+        </tbody>
+      </table></div>
+      <p>แพลตฟอร์มหลักตอนนี้คือ <strong>Java SE</strong> (ที่เราเรียน) และ <strong>Jakarta EE</strong> สำหรับระบบฝั่งเซิร์ฟเวอร์ ส่วน Java ME สำหรับมือถือรุ่นเก่าเลิกใช้ไปแล้ว</p>
+    </section>
+
+    <section id="layers">
+      <h2>JDK JRE JVM ซ้อนกันอย่างไร</h2>
+      <div class="lab">
+        <h3>กดแต่ละชั้นเพื่อดูหน้าที่</h3>
+        <div class="layers">
+          <div class="layer jdk" data-layer="jdk" role="button" tabindex="0" aria-pressed="false">JDK
+            <div class="layer jre" data-layer="jre" role="button" tabindex="0" aria-pressed="false">JRE
+              <div class="layer jvm" data-layer="jvm" role="button" tabindex="0" aria-pressed="false">JVM</div>
+            </div>
+          </div>
+        </div>
+        <div class="out" id="layer-out" aria-live="polite">เลือกชั้นที่อยากรู้</div>
+      </div>
+      <p>จำง่าย ๆ ว่า <strong>JDK ใช้เขียน JVM ใช้รัน</strong> นักพัฒนาติดตั้ง JDK ตัวเดียวก็ได้ทุกชั้น</p>
+    </section>
+
+    <section id="flow">
+      <h2>จาก .java สู่โปรแกรมที่รันได้</h2>
+      <div class="lab" id="flow-lab">
+        <h3>กดถัดไปทีละขั้น</h3>
+        <div class="flow">
+          <div class="stage"><strong>Hello.java</strong>ซอร์สโค้ด</div>
+          <div class="stage"><strong>Hello.class</strong>bytecode</div>
+          <div class="stage"><strong>JVM</strong>รันบนเครื่องจริง</div>
+        </div>
+        <p id="flow-text" aria-live="polite"></p>
+        <div class="code term"><pre id="flow-term"></pre></div>
+        <div class="row">
+          <button class="btn ghost" type="button" id="flow-prev">ก่อนหน้า</button>
+          <button class="btn" type="button" id="flow-next">ถัดไป</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="install">
+      <h2>ติดตั้ง JDK 25</h2>
+      <p>ใช้ <a href="https://adoptium.net/" target="_blank" rel="noopener">Eclipse Temurin 25</a> ฟรีและเป็น open source เลือกระบบของเครื่องตัวเอง</p>
+      <div class="tabs" data-remember="os">
+        <div role="tablist" aria-label="ระบบปฏิบัติการ">
+          <button role="tab" data-tab="win" aria-controls="jdk-win" id="t-jdk-win">Windows</button>
+          <button role="tab" data-tab="mac" aria-controls="jdk-mac" id="t-jdk-mac">macOS</button>
+        </div>
+        <div role="tabpanel" id="jdk-win" aria-labelledby="t-jdk-win">
+          <ol>
+            <li>ดาวน์โหลดไฟล์ <code>.msi</code> แบบ x64 แล้วดับเบิลคลิก</li>
+            <li>หน้า Custom Setup ให้ตรวจว่าเลือก <strong>Add to PATH</strong> แล้ว และเลือก <strong>Set JAVA_HOME variable</strong> เพิ่ม</li>
+            <li>กด Install จนจบ</li>
+            <li>ปิด Command Prompt ที่เปิดค้างไว้ แล้วเปิดใหม่</li>
+          </ol>
+        </div>
+        <div role="tabpanel" id="jdk-mac" aria-labelledby="t-jdk-mac" hidden>
+          <ol>
+            <li>ดูชิปที่ Apple menu > About This Mac ถ้าเป็น Apple M ให้โหลด <code>aarch64</code> ถ้าเป็น Intel ให้โหลด <code>x64</code></li>
+            <li>เปิดไฟล์ <code>.pkg</code> กด Continue แล้ว Install ใส่รหัสผ่านเครื่อง</li>
+            <li>เปิด Terminal ใหม่ (Cmd+Space แล้วพิมพ์ Terminal) ไม่ต้องตั้ง PATH เอง</li>
+          </ol>
+        </div>
+      </div>
+      <p>ตรวจผลการติดตั้ง ต้องเห็นเลข 25 ทั้งสองบรรทัด</p>
+      <div class="code term"><pre><code>java -version
+javac -version</code></pre></div>
+      <details class="reveal">
+        <summary>ขึ้น 'javac' is not recognized หรือ command not found</summary>
+        <p>Windows: ปิดแล้วเปิด terminal ใหม่ ถ้ายังไม่ได้ให้รันตัวติดตั้งซ้ำแล้วเลือก Add to PATH ถ้าขึ้นเลข 8 หรือ 17 แปลว่ามี Java เก่าอยู่ พิมพ์ <code>where java</code> เพื่อดู แล้วถอน Java เก่าออก</p>
+        <p>macOS: พิมพ์ <code>/usr/libexec/java_home -V</code> ถ้าไม่มี 25 ให้ติดตั้ง .pkg ใหม่ให้ตรงชิป</p>
+      </details>
+    </section>
+
+    <section id="first">
+      <h2>โปรแกรมแรกใน Terminal</h2>
+      <p>สร้างโฟลเดอร์ <code>java-lab</code> แล้วสร้างไฟล์ <code>Hello.java</code> ชื่อไฟล์ต้องตรงกับชื่อคลาสทุกตัวอักษร</p>
+      <div class="code"><pre><code>public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello World");
+        System.out.println("สวัสดี วิทยาลัยเทคนิคเลย");
+    }
+}</code></pre></div>
+      <div class="code term"><pre><code>cd java-lab
+javac Hello.java
+java Hello</code></pre></div>
+      <div class="warn"><p>Notepad ชอบบันทึกเป็น <code>Hello.java.txt</code> ให้เลือก Save as type: All Files ส่วน TextEdit บน Mac ให้กด Format > Make Plain Text ก่อนบันทึก</p></div>
+      <h3>ทางลัดของ Java 25</h3>
+      <p>ไฟล์สั้น ๆ ไม่ต้องมีคลาสก็ได้ และรันไฟล์ <code>.java</code> ตรง ๆ ได้เลยโดยไม่ต้อง <code>javac</code> เหมาะกับการลองโค้ดเร็ว ๆ แต่งานในวิชานี้ยังเขียนแบบมีคลาสเป็นหลัก</p>
+      <div class="code"><pre><code>void main() {
+    IO.println("Hello จาก Java 25");
+}</code></pre></div>
+      <div class="code term"><pre><code>java Hi.java</code></pre></div>
+    </section>
+
+    <section id="netbeans">
+      <h2>Apache NetBeans</h2>
+      <p>NetBeans เป็น IDE ฟรีที่มีตัวช่วยสร้างหน้าจอ GUI แบบลากวาง ดาวน์โหลดตัวติดตั้งได้จาก <a href="https://netbeans.apache.org/front/main/download/" target="_blank" rel="noopener">หน้าดาวน์โหลด Apache NetBeans</a> (เลือกตัวติดตั้งของ Codelerity หรือ Friends of Apache NetBeans ซึ่งมี JDK สำหรับรัน IDE มาให้ในตัว)</p>
+      <div class="tabs" data-remember="os">
+        <div role="tablist" aria-label="ระบบปฏิบัติการ">
+          <button role="tab" data-tab="win" aria-controls="nb-win" id="t-nb-win">Windows</button>
+          <button role="tab" data-tab="mac" aria-controls="nb-mac" id="t-nb-mac">macOS</button>
+        </div>
+        <div role="tabpanel" id="nb-win" aria-labelledby="t-nb-win">
+          <p>รันตัวติดตั้ง กด Next ยอมรับ license แล้ว Next จนจบ</p>
+        </div>
+        <div role="tabpanel" id="nb-mac" aria-labelledby="t-nb-mac" hidden>
+          <p>เปิดไฟล์ .pkg กด Continue แล้ว Install ถ้าเปิดไม่ได้เพราะระบบบล็อก ไปที่ System Settings > Privacy & Security แล้วกด Open Anyway</p>
+        </div>
+      </div>
+      <h3>สร้างโปรเจกต์แรก</h3>
+      <ol>
+        <li>File > New Project > <strong>Java with Maven</strong> > Java Application > Next</li>
+        <li>Project Name: <code>pgm1_1</code> Group Id: <code>th.ac.loeitech</code> Package: <code>th.ac.loeitech.unit1</code></li>
+        <li>คลิกขวาที่ package > New > Java Class ตั้งชื่อ <code>HelloConsole</code></li>
+        <li>พิมพ์เมธอด main แล้วกด Run File</li>
+      </ol>
+      <div class="code"><pre><code>public static void main(String[] args) {
+    System.out.println("Hello World");
+}</code></pre></div>
+      <div class="note"><p>Run File: Windows กด <code>Shift+F6</code> ส่วน MacBook กด <code>fn+Shift+F6</code> หรือคลิกขวาที่หน้าโค้ดแล้วเลือก Run File ผลลัพธ์ขึ้นที่หน้าต่าง Output ด้านล่าง</p></div>
+      <details class="reveal">
+        <summary>ครั้งแรกค้างที่ Downloading นานมาก</summary>
+        <p>Maven กำลังโหลดส่วนเสริมจากอินเทอร์เน็ต รอครั้งเดียวแล้วครั้งต่อไปจะเร็ว ถ้าเน็ตช้ามาก เลือก <strong>Java with Ant</strong> แทนได้</p>
+      </details>
+    </section>
+
+    <section id="gui">
+      <h2>โปรแกรม GUI ด้วย JFrame</h2>
+      <ol>
+        <li>คลิกขวาที่ package > New > <strong>JFrame Form</strong> (ถ้าไม่เห็น เลือก Other > Swing GUI Forms) ตั้งชื่อ <code>HelloFrame</code></li>
+        <li>ลาก <strong>Label</strong> จาก Palette มาวาง แล้วแก้ Properties ช่อง text เป็น Hello World</li>
+        <li>ลาก <strong>Button</strong> มาวาง ดับเบิลคลิกที่ปุ่ม แล้วพิมพ์โค้ดด้านล่างในเมธอดที่เปิดขึ้น</li>
+        <li>กด Run File จะได้หน้าต่างของตัวเอง ต่างจาก Console ที่พิมพ์ลง Output</li>
+      </ol>
+      <div class="code"><pre><code>jLabel1.setText("กดแล้ว!");</code></pre></div>
+      <p>ลองเปิดแท็บ Source จะเห็นว่า NetBeans สร้างคลาสที่ <code>extends JFrame</code> ให้ นี่คือคลาสและออบเจ็กต์ที่เราจะเรียนกันทั้งเทอม</p>
+    </section>
+
+    <section id="check">
+      <h2>เช็กความเข้าใจ</h2>
+      <ol class="qc">
+        <li data-correct="f" data-why="JDK มี JRE อยู่ข้างใน แต่ JRE ไม่มีคอมไพเลอร์">ติดตั้ง JRE แล้วจะได้ JDK มาด้วยเสมอ
+          <div class="choices"><button class="btn ghost" data-a="t">ถูก</button><button class="btn ghost" data-a="f">ผิด</button></div></li>
+        <li data-correct="t" data-why="bytecode ไม่ผูกกับระบบปฏิบัติการ JVM ของแต่ละเครื่องเป็นคนแปลต่อ">ไฟล์ .class ที่คอมไพล์บน Windows นำไปรันบน macOS ได้
+          <div class="choices"><button class="btn ghost" data-a="t">ถูก</button><button class="btn ghost" data-a="f">ผิด</button></div></li>
+        <li data-correct="t" data-why="JDK 11 ขึ้นไปรันไฟล์ซอร์สเดี่ยวได้ตรง ๆ โดยคอมไพล์ในหน่วยความจำให้">ใน JDK 25 สั่ง java Hi.java ได้เลยโดยไม่ต้อง javac
+          <div class="choices"><button class="btn ghost" data-a="t">ถูก</button><button class="btn ghost" data-a="f">ผิด</button></div></li>
+        <li data-correct="f" data-why="Java เป็น platform independent เพราะมี JVM">โปรแกรมภาษาจาวาไม่เป็น platform independent
+          <div class="choices"><button class="btn ghost" data-a="t">ถูก</button><button class="btn ghost" data-a="f">ผิด</button></div></li>
+      </ol>
+    </section>
+
+    <section id="lab">
+      <h2>Lab: โปรไฟล์ของฉัน</h2>
+      <p>ในโปรเจกต์ <code>pgm1_1</code> สร้างโปรแกรมแสดงชื่อ ที่อยู่ และอีเมล 2 แบบ</p>
+      <ul>
+        <li><code>ProfileConsole</code> แสดงผลทาง Output</li>
+        <li><code>ProfileFrame</code> เป็น GUI ที่มี JLabel อย่างน้อย 3 ตัว</li>
+        <li>งานเสริม: เพิ่มปุ่ม "แสดงอีเมล" ให้กดแล้วอีเมลจึงขึ้น</li>
+      </ul>
+      <h3>เช็กลิสต์ก่อนส่ง</h3>
+      <div class="progress" data-progress="unit1"><span></span></div>
+      <ul class="checklist" data-checklist="unit1">
+        <li><input type="checkbox" id="u1c1"><label for="u1c1">java -version และ javac -version ขึ้นเลข 25</label></li>
+        <li><input type="checkbox" id="u1c2"><label for="u1c2">คอมไพล์และรัน Hello.java จาก Terminal ได้</label></li>
+        <li><input type="checkbox" id="u1c3"><label for="u1c3">สร้างโปรเจกต์ใน NetBeans ที่มี package ถูกต้อง</label></li>
+        <li><input type="checkbox" id="u1c4"><label for="u1c4">ProfileConsole รันได้และแสดงข้อมูลครบ</label></li>
+        <li><input type="checkbox" id="u1c5"><label for="u1c5">ProfileFrame รันได้ ภาษาไทยแสดงถูกต้อง</label></li>
+        <li><input type="checkbox" id="u1c6"><label for="u1c6">แคปหน้าจอทั้ง 2 แบบ และ zip โปรเจกต์ส่งแล้ว</label></li>
+      </ul>
+    </section>
+
+    <section id="exit">
+      <h2>Exit Ticket</h2>
+      <p>ทำก่อนออกจากคาบ ใช้เวลาประมาณ 3 นาที กดตรวจแล้วคัดลอกผลส่งครู</p>
+      <form class="exit" data-exit="unit1" data-title="หน่วยที่ 1" data-form-url="" novalidate>
+        <div class="who">
+          <label>ชื่อ-สกุล<input type="text" name="name" autocomplete="name"></label>
+          <label>รหัสนักศึกษา<input type="text" name="sid" inputmode="numeric"></label>
+          <label>ห้อง<input type="text" name="room"></label>
+        </div>
+
+        <fieldset data-correct="b" data-explain="javac แปลง .java เป็น bytecode ได้ไฟล์ .class">
+          <legend>1. สั่ง javac Hello.java แล้วจะได้ไฟล์อะไร</legend>
+          <label class="opt"><input type="radio" name="q1" value="a">Hello.exe</label>
+          <label class="opt"><input type="radio" name="q1" value="b">Hello.class</label>
+          <label class="opt"><input type="radio" name="q1" value="c">Hello.jar</label>
+          <label class="opt"><input type="radio" name="q1" value="d">Hello.txt</label>
+        </fieldset>
+
+        <fieldset data-correct="c" data-explain="JDK ครอบ JRE และ JRE ครอบ JVM อีกที">
+          <legend>2. ข้อใดอธิบายความสัมพันธ์ได้ถูกต้อง</legend>
+          <label class="opt"><input type="radio" name="q2" value="a">JVM มี JDK อยู่ข้างใน</label>
+          <label class="opt"><input type="radio" name="q2" value="b">JRE มี JDK อยู่ข้างใน</label>
+          <label class="opt"><input type="radio" name="q2" value="c">JDK มี JRE และ JVM อยู่ข้างใน</label>
+          <label class="opt"><input type="radio" name="q2" value="d">ทั้งสามแยกกันไม่เกี่ยวข้องกัน</label>
+        </fieldset>
+
+        <fieldset data-correct="c" data-explain="bytecode รันได้ทุกระบบที่มี JVM นี่คือ write once, run anywhere">
+          <legend>3. เพื่อนคอมไพล์ Hello.class บน Windows แล้วส่งให้เราที่ใช้ Mac จะเกิดอะไรขึ้น</legend>
+          <label class="opt"><input type="radio" name="q3" value="a">ต้องเขียนโค้ดใหม่ทั้งหมด</label>
+          <label class="opt"><input type="radio" name="q3" value="b">ต้องแปลงไฟล์เป็น .exe ก่อน</label>
+          <label class="opt"><input type="radio" name="q3" value="c">รันได้เลยด้วย java Hello ถ้าเครื่องมี JDK</label>
+          <label class="opt"><input type="radio" name="q3" value="d">รันไม่ได้ เพราะ .class ใช้ได้แค่บน Windows</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>4. วันนี้ได้เรียนรู้อะไร (1 ประโยค)</legend>
+          <textarea name="learned" rows="2"></textarea>
+        </fieldset>
+        <fieldset>
+          <legend>5. ยังสงสัยหรือติดขัดตรงไหน</legend>
+          <textarea name="muddy" rows="2"></textarea>
+        </fieldset>
+        <fieldset>
+          <legend>6. มั่นใจแค่ไหนว่าทำ Lab เองได้ (1 = ยังไม่ได้เลย, 5 = สอนเพื่อนได้)</legend>
+          <div class="fist">
+            <label><input type="radio" name="fist" value="1">1</label>
+            <label><input type="radio" name="fist" value="2">2</label>
+            <label><input type="radio" name="fist" value="3">3</label>
+            <label><input type="radio" name="fist" value="4">4</label>
+            <label><input type="radio" name="fist" value="5">5</label>
+          </div>
+        </fieldset>
+
+        <button class="btn" type="submit">ตรวจคำตอบ</button>
+        <p class="form-error" role="alert"></p>
+        <div class="exit-result" hidden></div>
+      </form>
+      <p><a href="unit2.html">ไปหน่วยที่ 2 ตัวแปรและตัวดำเนินการ</a></p>
+    </section>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หน่วยที่ 2 ตัวแปร ตัวดำเนินการ และการแปลงชนิดข้อมูล | Java ฉบับลงมือทำ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Mitr:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html"><span data-javy></span>Java ฉบับลงมือทำ</a>
+  <button class="icon-btn" type="button" data-theme-toggle>โหมดมืด</button>
+</header>
+
+<div class="wrap unit-layout">
+  <nav class="toc" aria-label="สารบัญหน่วยที่ 2">
+    <details open>
+      <summary>ในหน่วยนี้</summary>
+      <ol>
+        <li><a href="#types">ชนิดข้อมูล</a></li>
+        <li><a href="#declare">ประกาศตัวแปร</a></li>
+        <li><a href="#names">การตั้งชื่อ</a></li>
+        <li><a href="#const">ค่าคงที่</a></li>
+        <li><a href="#scope">ขอบเขตตัวแปร</a></li>
+        <li><a href="#math">คณิตศาสตร์</a></li>
+        <li><a href="#incdec">++ และ --</a></li>
+        <li><a href="#logic">เปรียบเทียบและตรรกะ</a></li>
+        <li><a href="#bits">ระดับบิต</a></li>
+        <li><a href="#order">ลำดับการคำนวณ</a></li>
+        <li><a href="#convert">การแปลงชนิดข้อมูล</a></li>
+        <li><a href="#lab">Lab</a></li>
+        <li><a href="#exit">Exit Ticket</a></li>
+      </ol>
+    </details>
+  </nav>
+
+  <main class="content">
+    <section class="unit-hero">
+      <h1>หน่วยที่ 2 ตัวแปร ตัวดำเนินการ และการแปลงชนิดข้อมูล</h1>
+      <p class="lead">ตัวแปรคือกล่องเก็บข้อมูล ตัวดำเนินการคือสิ่งที่เราทำกับข้อมูลในกล่อง หน่วยนี้มีของให้ลองกดเล่นเยอะ ลองก่อนอ่านเฉลย</p>
+      <div class="goal">
+        <h3>จบหน่วยนี้แล้วทำได้</h3>
+        <ul>
+          <li>ประกาศตัวแปรและค่าคงที่ ตั้งชื่อถูกกฎและถูก convention</li>
+          <li>เขียนนิพจน์และคำนวณผลได้ถูกตามลำดับความสำคัญ</li>
+          <li>แปลงชนิดข้อมูล ทั้งแบบอัตโนมัติและแบบ cast</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="types">
+      <h2>ชนิดข้อมูลพื้นฐาน</h2>
+      <p>Java มีชนิดข้อมูลพื้นฐาน (primitive) 8 ชนิด ที่ใช้บ่อยที่สุดคือ <code>int</code>, <code>double</code>, <code>char</code> และ <code>boolean</code></p>
+      <div class="table-scroll"><table>
+        <thead><tr><th>ชนิด</th><th>ขนาด</th><th>เก็บอะไร</th><th>ตัวอย่าง</th></tr></thead>
+        <tbody>
+          <tr><td><code>byte</code></td><td>1 byte</td><td>จำนวนเต็ม -128 ถึง 127</td><td><code>byte b = 100;</code></td></tr>
+          <tr><td><code>short</code></td><td>2 bytes</td><td>จำนวนเต็ม ประมาณ ±32,000</td><td><code>short s = 3000;</code></td></tr>
+          <tr><td><code>int</code></td><td>4 bytes</td><td>จำนวนเต็ม ประมาณ ±2,100 ล้าน</td><td><code>int age = 17;</code></td></tr>
+          <tr><td><code>long</code></td><td>8 bytes</td><td>จำนวนเต็มขนาดใหญ่ ลงท้ายด้วย L</td><td><code>long pop = 66_000_000L;</code></td></tr>
+          <tr><td><code>float</code></td><td>4 bytes</td><td>ทศนิยม ลงท้ายด้วย F</td><td><code>float f = 2.5F;</code></td></tr>
+          <tr><td><code>double</code></td><td>8 bytes</td><td>ทศนิยมความละเอียดสูง (ค่าเริ่มต้นของเลขทศนิยม)</td><td><code>double gpa = 3.25;</code></td></tr>
+          <tr><td><code>char</code></td><td>2 bytes</td><td>ตัวอักษร 1 ตัว ใช้ ' '</td><td><code>char grade = 'A';</code></td></tr>
+          <tr><td><code>boolean</code></td><td>—</td><td>true หรือ false</td><td><code>boolean passed = true;</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="note"><p><code>String</code> สำหรับข้อความใช้ " " และเป็น object ไม่ใช่ primitive เราจะใช้บ่อยมาก เช่น <code>String name = "Aump";</code></p></div>
+    </section>
+
+    <section id="declare">
+      <h2>ประกาศและกำหนดค่า</h2>
+      <p>ต้องประกาศก่อนใช้เสมอ รูปแบบคือ <code>ชนิดข้อมูล ชื่อ = ค่า;</code></p>
+      <div class="code"><pre><code>int x = 1;
+double radius = 3.14;
+char c = 'a';
+int y = x + 4 * 3;       // y = 13
+int amount = 131 + 14;   // amount = 145
+int a, b, total;         // ประกาศหลายตัวพร้อมกัน</code></pre></div>
+      <h3>var และตัวเลขที่อ่านง่าย</h3>
+      <p>ตั้งแต่ Java 10 ใช้ <code>var</code> ให้คอมไพเลอร์ดูชนิดจากค่าที่กำหนดได้ ใช้ได้กับตัวแปรในเมธอดเท่านั้น และต้องกำหนดค่าทันที ส่วนตัวเลขยาว ๆ ใส่ <code>_</code> คั่นหลักได้</p>
+      <div class="code"><pre><code>var count = 10;           // ได้ int
+var message = "สวัสดี";    // ได้ String
+long budget = 1_500_000L; // เท่ากับ 1500000</code></pre></div>
+    </section>
+
+    <section id="names">
+      <h2>การตั้งชื่อ (identifier)</h2>
+      <ul>
+        <li>ขึ้นต้นด้วยตัวอักษร, <code>_</code> หรือ <code>$</code> ห้ามขึ้นต้นด้วยตัวเลข</li>
+        <li>ตัวถัดไปเป็นตัวอักษร ตัวเลข <code>_</code> หรือ <code>$</code> ห้ามมีช่องว่างหรือเครื่องหมายอื่น</li>
+        <li>ห้ามตรงกับคีย์เวิร์ด เช่น <code>int</code>, <code>class</code> และห้ามใช้ <code>_</code> ตัวเดียว</li>
+        <li>ตัวพิมพ์เล็กใหญ่ถือว่าต่างกัน <code>score</code> กับ <code>Score</code> คนละตัว</li>
+      </ul>
+      <div class="lab">
+        <h3>ทดสอบชื่อตัวแปร</h3>
+        <label for="id-input">พิมพ์ชื่อ</label>
+        <div class="row"><input type="text" id="id-input" autocomplete="off" spellcheck="false" style="flex:1;min-width:12rem"></div>
+        <div class="row" style="margin-top:.5rem">
+          <button class="btn ghost" type="button" data-try-id="MyVariable">MyVariable</button>
+          <button class="btn ghost" type="button" data-try-id="_MyVariable">_MyVariable</button>
+          <button class="btn ghost" type="button" data-try-id="$x">$x</button>
+          <button class="btn ghost" type="button" data-try-id="My Variable">My Variable</button>
+          <button class="btn ghost" type="button" data-try-id="a+c">a+c</button>
+          <button class="btn ghost" type="button" data-try-id="9pnS">9pnS</button>
+          <button class="btn ghost" type="button" data-try-id="class">class</button>
+          <button class="btn ghost" type="button" data-try-id="คะแนน">คะแนน</button>
+        </div>
+        <div class="out" id="id-out" aria-live="polite"></div>
+      </div>
+      <h3>ถูกกฎแล้ว ต้องถูก convention ด้วย</h3>
+      <div class="table-scroll"><table>
+        <thead><tr><th>ใช้กับ</th><th>รูปแบบ</th><th>ตัวอย่าง</th></tr></thead>
+        <tbody>
+          <tr><td>คลาส</td><td>PascalCase เป็นคำนาม</td><td><code>StudentCard</code></td></tr>
+          <tr><td>ตัวแปร, attribute</td><td>camelCase เป็นคำนาม</td><td><code>totalScore</code></td></tr>
+          <tr><td>เมธอด</td><td>camelCase เป็นคำกริยา</td><td><code>calculateGrade()</code></td></tr>
+          <tr><td>ค่าคงที่</td><td>UPPER_SNAKE_CASE</td><td><code>MAX_SCORE</code></td></tr>
+          <tr><td>package</td><td>ตัวเล็กทั้งหมด</td><td><code>th.ac.loeitech.unit2</code></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="const">
+      <h2>ค่าคงที่ด้วย final</h2>
+      <p>ใส่ <code>final</code> หน้าชนิดข้อมูล แล้วค่านั้นจะเปลี่ยนไม่ได้อีก ถ้าเผลอกำหนดค่าใหม่ คอมไพล์จะไม่ผ่าน</p>
+      <div class="code"><pre><code>final int MAX_SCORE = 100;
+final float MIN_GPA = 2.0F;
+double area = Math.PI * r * r;   // ค่า PI มีให้แล้วใน Math.PI (3.14159...)</code></pre></div>
+    </section>
+
+    <section id="scope">
+      <h2>ขอบเขตของตัวแปร</h2>
+      <p>ตัวแปรใช้ได้เฉพาะในบล็อก <code>{ }</code> ที่ประกาศไว้เท่านั้น</p>
+      <div class="table-scroll"><table>
+        <thead><tr><th></th><th>Field (Attribute)</th><th>Local variable</th></tr></thead>
+        <tbody>
+          <tr><td>ประกาศที่</td><td>ในคลาส นอกเมธอด</td><td>ในเมธอดหรือบล็อก</td></tr>
+          <tr><td>ใช้ได้ที่</td><td>ทุกเมธอดในคลาส</td><td>เฉพาะบล็อกที่ประกาศ</td></tr>
+          <tr><td>ค่าเริ่มต้น</td><td>ได้ 0, false หรือ null อัตโนมัติ</td><td>ไม่มี ต้องกำหนดค่าก่อนใช้</td></tr>
+          <tr><td>อยู่ได้นานแค่ไหน</td><td>ตามอายุ object (static อยู่ตามอายุคลาส)</td><td>หายไปเมื่อเมธอดทำงานจบ</td></tr>
+        </tbody>
+      </table></div>
+      <div class="code"><pre><code>public class VariableScopeDemo {
+    public int i;                 // field
+
+    public void method1() {
+        int j = 4;                // local ของ method1
+        int k = 2;
+    }
+
+    public void method2() {
+        int j = 0;                // local ของ method2 (คนละตัวกับข้างบน)
+        System.out.println(i);    // ใช้ได้ เพราะ i เป็น field
+        // System.out.println(k); // ผิด: k อยู่ใน method1 เท่านั้น
+    }
+}</code></pre></div>
+      <details class="reveal">
+        <summary>แล้วตัวแปรพวกนี้อยู่ตรงไหนในหน่วยความจำ</summary>
+        <p>Local variable อยู่บน <strong>Stack</strong> ซ้อนกันเป็นชั้นตามเมธอดที่กำลังทำงาน พอเมธอดจบชั้นนั้นก็หายไป ส่วน object ที่สร้างด้วย <code>new</code> และ field ของมันอยู่บน <strong>Heap</strong> ตัวแปรบน Stack แค่ถือที่อยู่ชี้ไปหา object เรื่องนี้จะชัดขึ้นในหน่วยคลาสและออบเจ็กต์</p>
+      </details>
+    </section>
+
+    <section id="math">
+      <h2>ตัวดำเนินการคณิตศาสตร์</h2>
+      <p><code>+</code> บวก <code>-</code> ลบ <code>*</code> คูณ <code>/</code> หาร <code>%</code> เศษจากการหาร จุดที่พลาดบ่อยที่สุดคือ <strong>int หาร int ได้ int</strong> เศษทศนิยมหายไปเลย</p>
+      <div class="lab">
+        <h3>ห้องทดลองการหาร</h3>
+        <div class="row">
+          <label>a <input type="number" id="div-a" value="7" style="width:6rem"></label>
+          <label>b <input type="number" id="div-b" value="2" style="width:6rem"></label>
+          <label>ชนิด <select id="div-type"><option value="int">int</option><option value="double">double</option></select></label>
+        </div>
+        <div class="out" id="div-out" aria-live="polite"></div>
+        <p style="margin:.75rem 0 0;font-size:.95rem">ลอง 7 กับ 2, ลอง -7 กับ 2 แล้วลอง b เป็น 0 ทั้งแบบ int และ double</p>
+      </div>
+    </section>
+
+    <section id="incdec">
+      <h2>กำหนดค่าแบบย่อ และ ++ --</h2>
+      <div class="table-scroll"><table>
+        <thead><tr><th>เขียนย่อ</th><th>ความหมาย</th></tr></thead>
+        <tbody>
+          <tr><td><code>x += 3;</code></td><td><code>x = x + 3;</code></td></tr>
+          <tr><td><code>x -= 3;</code></td><td><code>x = x - 3;</code></td></tr>
+          <tr><td><code>x *= 3;</code></td><td><code>x = x * 3;</code></td></tr>
+          <tr><td><code>x /= 3;</code></td><td><code>x = x / 3;</code></td></tr>
+          <tr><td><code>x %= 3;</code></td><td><code>x = x % 3;</code></td></tr>
+        </tbody>
+      </table></div>
+      <p><code>++</code> เพิ่มค่าทีละ 1 และ <code>--</code> ลดค่าทีละ 1 ตำแหน่งของมันมีผลเมื่อใช้ในนิพจน์</p>
+      <div class="lab">
+        <h3>a++ กับ ++a ต่างกันยังไง</h3>
+        <div class="row">
+          <button class="btn" type="button" id="pp-post">int b = a++;</button>
+          <button class="btn" type="button" id="pp-pre">int b = ++a;</button>
+          <button class="btn ghost" type="button" id="pp-reset">เริ่มใหม่ (a = 5)</button>
+        </div>
+        <div class="out" id="pp-out" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="logic">
+      <h2>เปรียบเทียบและตรรกะ</h2>
+      <p>ตัวดำเนินการเปรียบเทียบ <code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code> <code>==</code> <code>!=</code> ให้ผลเป็น <code>true</code> หรือ <code>false</code></p>
+      <div class="warn"><p>ข้อความ (String) ห้ามเทียบด้วย <code>==</code> ให้ใช้ <code>name.equals("Aump")</code> เพราะ <code>==</code> เทียบว่าเป็น object ตัวเดียวกันหรือเปล่า ไม่ได้เทียบตัวอักษร</p></div>
+      <div class="table-scroll"><table>
+        <thead><tr><th>ตัวดำเนินการ</th><th>ความหมาย</th><th>เป็น true เมื่อ</th></tr></thead>
+        <tbody>
+          <tr><td><code>&amp;&amp;</code></td><td>และ (AND)</td><td>จริงทั้งสองฝั่ง</td></tr>
+          <tr><td><code>||</code></td><td>หรือ (OR)</td><td>จริงอย่างน้อยหนึ่งฝั่ง</td></tr>
+          <tr><td><code>!</code></td><td>ไม่ (NOT)</td><td>กลับค่าจริงเป็นเท็จ เท็จเป็นจริง</td></tr>
+          <tr><td><code>^</code></td><td>XOR</td><td>สองฝั่งต่างกัน</td></tr>
+        </tbody>
+      </table></div>
+      <p><code>&amp;&amp;</code> และ <code>||</code> เป็นแบบ <strong>short-circuit</strong> ถ้ารู้ผลจากฝั่งซ้ายแล้วจะไม่ประเมินฝั่งขวาเลย ส่วน <code>&amp;</code> กับ <code>|</code> ประเมินทั้งสองฝั่งเสมอ งานทั่วไปให้ใช้ <code>&amp;&amp;</code> และ <code>||</code></p>
+      <div class="code"><pre><code>int count = 0;
+boolean ok = (count != 0) &amp;&amp; (10 / count &gt; 1); // false และไม่หารด้วย 0 เพราะหยุดตั้งแต่ฝั่งซ้าย</code></pre></div>
+    </section>
+
+    <section id="bits">
+      <h2>ตัวดำเนินการระดับบิต</h2>
+      <p><code>&amp;</code> <code>|</code> <code>^</code> <code>~</code> ทำงานกับเลขฐานสองทีละบิต ส่วนตัวเลื่อนบิตมี <code>&lt;&lt;</code> เลื่อนซ้าย, <code>&gt;&gt;</code> เลื่อนขวาแบบรักษาเครื่องหมาย และ <code>&gt;&gt;&gt;</code> เลื่อนขวาแบบเติม 0</p>
+      <div class="code"><pre><code>int x = 8;          // 0000 1000
+int a = x &gt;&gt; 1;     // 4   เหมือนหาร 2
+int b = x &lt;&lt; 2;     // 32  เหมือนคูณ 2 ยกกำลัง 2
+int c = x &gt;&gt; 32;    // 8   int ใช้จำนวนเลื่อน mod 32 จึงไม่เลื่อนเลย</code></pre></div>
+      <div class="note"><p><code>&gt;&gt; n</code> เท่ากับหาร 2 ยกกำลัง n เฉพาะเลขบวก ถ้าเป็นเลขลบจะปัดลงไปทางลบ ส่วน byte, short, char จะถูกแปลงเป็น int ก่อนเลื่อน</p></div>
+    </section>
+
+    <section id="order">
+      <h2>ลำดับการคำนวณ</h2>
+      <div class="table-scroll"><table>
+        <thead><tr><th>ลำดับ</th><th>ตัวดำเนินการ</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><code>( )</code> และ <code>a++ a--</code></td></tr>
+          <tr><td>2</td><td><code>++a --a + - ! ~ (cast)</code></td></tr>
+          <tr><td>3</td><td><code>* / %</code></td></tr>
+          <tr><td>4</td><td><code>+ -</code></td></tr>
+          <tr><td>5</td><td><code>&lt;&lt; &gt;&gt; &gt;&gt;&gt;</code></td></tr>
+          <tr><td>6</td><td><code>&lt; &gt; &lt;= &gt;= instanceof</code> แล้ว <code>== !=</code></td></tr>
+          <tr><td>7</td><td><code>&amp;</code> แล้ว <code>^</code> แล้ว <code>|</code></td></tr>
+          <tr><td>8</td><td><code>&amp;&amp;</code> แล้ว <code>||</code></td></tr>
+          <tr><td>9</td><td><code>? :</code> (เลือกค่าตามเงื่อนไข)</td></tr>
+          <tr><td>10</td><td><code>= += -= *= /= %=</code> (ทำจากขวาไปซ้าย)</td></tr>
+        </tbody>
+      </table></div>
+      <p>ไม่แน่ใจเมื่อไหร่ ให้ใส่วงเล็บ โค้ดอ่านง่ายกว่าจำตาราง ลองคิดก่อนเปิดเฉลย</p>
+      <details class="reveal">
+        <summary><code>int x = 2 + 3 * 4 - (7 + 2);</code> ได้เท่าไร</summary>
+        <p><strong>5</strong> วงเล็บก่อนได้ 9, คูณก่อนบวกได้ 12, จากนั้น 2 + 12 - 9 = 5</p>
+      </details>
+      <details class="reveal">
+        <summary><code>int y = 5 - 3 * (6 / (5 + (5 + 3)) * 4 + 2) / 10;</code> ได้เท่าไร</summary>
+        <p><strong>5</strong> เพราะ 6 / 13 เป็น int หาร int ได้ 0 ในวงเล็บจึงเหลือ 0 * 4 + 2 = 2, แล้ว 3 * 2 = 6, 6 / 10 ได้ 0, สุดท้าย 5 - 0 = 5 ถ้าเปลี่ยนเป็น double จะได้ประมาณ 3.846</p>
+      </details>
+      <details class="reveal">
+        <summary><code>String result = (score &gt;= 50) ? "ผ่าน" : "ไม่ผ่าน";</code> ทำงานยังไง</summary>
+        <p>ถ้าเงื่อนไขในวงเล็บเป็นจริงได้ค่าหลัง <code>?</code> ถ้าเป็นเท็จได้ค่าหลัง <code>:</code> เป็นทางลัดของ if-else ที่ต้องการแค่เลือกค่า</p>
+      </details>
+    </section>
+
+    <section id="convert">
+      <h2>การแปลงชนิดข้อมูล</h2>
+      <p><strong>Widening</strong> คือแปลงจากชนิดเล็กไปใหญ่ Java ทำให้อัตโนมัติ ตามลูกศรนี้</p>
+      <div class="code"><pre><code>byte → short → int → long → float → double
+              char ↗</code></pre></div>
+      <p>ในนิพจน์คณิตศาสตร์ ถ้ามี double ผลเป็น double, ถ้าไม่มีแต่มี float ผลเป็น float, ถ้ามี long ผลเป็น long <strong>นอกนั้นผลเป็น int เสมอ</strong> ดังนั้น byte + byte ได้ int</p>
+      <div class="lab">
+        <h3>แปลงได้เองไหม</h3>
+        <div class="row">
+          <label>จาก <select id="w-from">
+            <option>byte</option><option>short</option><option>char</option><option selected>int</option><option>long</option><option>float</option><option>double</option><option>boolean</option>
+          </select></label>
+          <label>เป็น <select id="w-to">
+            <option>byte</option><option>short</option><option>char</option><option>int</option><option>long</option><option>float</option><option selected>double</option><option>boolean</option>
+          </select></label>
+        </div>
+        <div class="out" id="w-out" aria-live="polite"></div>
+      </div>
+      <h3>Narrowing ต้อง cast เอง</h3>
+      <p>แปลงจากใหญ่ไปเล็กต้องเขียน <code>(ชนิดที่ต้องการ)</code> ไว้หน้าค่า และอาจเสียข้อมูล</p>
+      <div class="code"><pre><code>int x = (int) 3.99;                  // 3 ตัดเศษทิ้ง ไม่ปัด
+long r = Math.round(3.99);           // 4 ถ้าอยากปัดให้ใช้ Math.round
+byte small = (byte) 200;             // -56 เพราะเกินช่วงของ byte</code></pre></div>
+      <h3>แปลงข้อความเป็นตัวเลข</h3>
+      <p>ข้อมูลที่รับจากช่องกรอกใน GUI เป็น String เสมอ ต้องแปลงก่อนคำนวณ</p>
+      <div class="code"><pre><code>int n = Integer.parseInt("42");
+double d = Double.parseDouble("2.5");
+String s = String.valueOf(n);        // ตัวเลขกลับเป็น String</code></pre></div>
+    </section>
+
+    <section id="lab">
+      <h2>Lab: เครื่องคิดเกรดเฉลี่ย</h2>
+      <p>เขียนคลาส <code>GradeCalculator</code> ที่เก็บคะแนน 3 วิชาเป็น String (จำลองว่ารับมาจากช่องกรอก) แล้ว</p>
+      <ul>
+        <li>แปลงเป็นตัวเลขด้วย <code>Integer.parseInt</code></li>
+        <li>หาผลรวมและค่าเฉลี่ยแบบ <code>double</code> ระวังเรื่อง int หาร int</li>
+        <li>ใช้ค่าคงที่ <code>final int PASS_SCORE = 50;</code> และ <code>? :</code> แสดงว่าผ่านหรือไม่ผ่าน</li>
+        <li>งานเสริม: ทำเป็น JFrame มีช่องกรอก 3 ช่องและปุ่มคำนวณ</li>
+      </ul>
+      <h3>เช็กลิสต์ก่อนส่ง</h3>
+      <div class="progress" data-progress="unit2"><span></span></div>
+      <ul class="checklist" data-checklist="unit2">
+        <li><input type="checkbox" id="u2c1"><label for="u2c1">ชื่อคลาส ตัวแปร และค่าคงที่ ถูก convention</label></li>
+        <li><input type="checkbox" id="u2c2"><label for="u2c2">แปลง String เป็นตัวเลขได้ ไม่มี error</label></li>
+        <li><input type="checkbox" id="u2c3"><label for="u2c3">ค่าเฉลี่ยมีทศนิยม ไม่โดนตัดเศษ</label></li>
+        <li><input type="checkbox" id="u2c4"><label for="u2c4">ใช้ final สำหรับเกณฑ์ผ่าน</label></li>
+        <li><input type="checkbox" id="u2c5"><label for="u2c5">แสดงผ่านหรือไม่ผ่านด้วย ? :</label></li>
+        <li><input type="checkbox" id="u2c6"><label for="u2c6">ทดสอบด้วยคะแนนอย่างน้อย 2 ชุด</label></li>
+      </ul>
+    </section>
+
+    <section id="exit">
+      <h2>Exit Ticket</h2>
+      <p>ทำก่อนออกจากคาบ ใช้เวลาประมาณ 3 นาที กดตรวจแล้วคัดลอกผลส่งครู</p>
+      <form class="exit" data-exit="unit2" data-title="หน่วยที่ 2" data-form-url="" novalidate>
+        <div class="who">
+          <label>ชื่อ-สกุล<input type="text" name="name" autocomplete="name"></label>
+          <label>รหัสนักศึกษา<input type="text" name="sid" inputmode="numeric"></label>
+          <label>ห้อง<input type="text" name="room"></label>
+        </div>
+
+        <fieldset data-correct="b" data-explain="int หาร int ได้ int เศษ .5 ถูกตัดทิ้ง">
+          <legend>1. <code>int r = 7 / 2;</code> ค่า r คือเท่าไร</legend>
+          <label class="opt"><input type="radio" name="q1" value="a">3.5</label>
+          <label class="opt"><input type="radio" name="q1" value="b">3</label>
+          <label class="opt"><input type="radio" name="q1" value="c">4</label>
+          <label class="opt"><input type="radio" name="q1" value="d">คอมไพล์ไม่ผ่าน</label>
+        </fieldset>
+
+        <fieldset data-correct="c" data-explain="ตัวแปรใช้ camelCase ขึ้นต้นตัวเล็ก ไม่มีช่องว่าง ไม่ขึ้นต้นด้วยตัวเลข">
+          <legend>2. ชื่อตัวแปรข้อใดถูกทั้งกฎและ convention</legend>
+          <label class="opt"><input type="radio" name="q2" value="a">2ndScore</label>
+          <label class="opt"><input type="radio" name="q2" value="b">total score</label>
+          <label class="opt"><input type="radio" name="q2" value="c">totalScore</label>
+          <label class="opt"><input type="radio" name="q2" value="d">TotalScore</label>
+        </fieldset>
+
+        <fieldset data-correct="a" data-explain="a++ ใช้ค่าเดิม (5) ก่อน แล้วค่อยเพิ่ม a เป็น 6">
+          <legend>3. <code>int a = 5; int b = a++;</code> ค่า b คือเท่าไร</legend>
+          <label class="opt"><input type="radio" name="q3" value="a">5</label>
+          <label class="opt"><input type="radio" name="q3" value="b">6</label>
+          <label class="opt"><input type="radio" name="q3" value="c">4</label>
+          <label class="opt"><input type="radio" name="q3" value="d">คอมไพล์ไม่ผ่าน</label>
+        </fieldset>
+
+        <fieldset data-correct="b" data-explain="cast เป็น int ตัดเศษทิ้ง ไม่ปัด ถ้าอยากปัดใช้ Math.round">
+          <legend>4. <code>double d = 9.7; int n = (int) d;</code> ค่า n คือเท่าไร</legend>
+          <label class="opt"><input type="radio" name="q4" value="a">10</label>
+          <label class="opt"><input type="radio" name="q4" value="b">9</label>
+          <label class="opt"><input type="radio" name="q4" value="c">9.7</label>
+          <label class="opt"><input type="radio" name="q4" value="d">คอมไพล์ไม่ผ่าน</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>5. วันนี้ได้เรียนรู้อะไร (1 ประโยค)</legend>
+          <textarea name="learned" rows="2"></textarea>
+        </fieldset>
+        <fieldset>
+          <legend>6. ยังสงสัยหรือติดขัดตรงไหน</legend>
+          <textarea name="muddy" rows="2"></textarea>
+        </fieldset>
+        <fieldset>
+          <legend>7. มั่นใจแค่ไหนว่าทำ Lab เองได้ (1 = ยังไม่ได้เลย, 5 = สอนเพื่อนได้)</legend>
+          <div class="fist">
+            <label><input type="radio" name="fist" value="1">1</label>
+            <label><input type="radio" name="fist" value="2">2</label>
+            <label><input type="radio" name="fist" value="3">3</label>
+            <label><input type="radio" name="fist" value="4">4</label>
+            <label><input type="radio" name="fist" value="5">5</label>
+          </div>
+        </fieldset>
+
+        <button class="btn" type="submit">ตรวจคำตอบ</button>
+        <p class="form-error" role="alert"></p>
+        <div class="exit-result" hidden></div>
+      </form>
+      <p><a href="unit3.html">ไปหน่วยที่ 3 คำสั่งเลือกทำ</a></p>
+    </section>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>
