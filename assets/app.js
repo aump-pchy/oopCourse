@@ -356,6 +356,100 @@
     start();
   }
 
+
+  // ---------- Unit 4: loop stepper ----------
+  const lsType = $("#ls-type");
+  if (lsType) {
+    const lsStart = $("#ls-start"), body = $("#ls-body"), code = $("#ls-code"), out = $("#ls-out"), next = $("#ls-next");
+    let rows = [], shown = 0;
+    const codes = {
+      "while": s => `int i = ${s};\nwhile (i <= 5) {\n    System.out.print(i + " ");\n    i++;\n}`,
+      "do": s => `int i = ${s};\ndo {\n    System.out.print(i + " ");\n    i++;\n} while (i <= 5);`,
+      "for": s => `for (int i = ${s}; i <= 5; i++) {\n    System.out.print(i + " ");\n}`
+    };
+    const build = () => {
+      const t = lsType.value, s = Number(lsStart.value);
+      rows = []; let i = s, printed = [];
+      if (t === "do") {
+        do { printed.push(i); rows.push([i, "—", "พิมพ์ " + i + " แล้ว i++", printed.join(" ")]); i++; rows.push([i, `${i} <= 5 → ${i <= 5}`, i <= 5 ? "วนต่อ" : "ออกจาก loop", printed.join(" ")]); } while (i <= 5);
+      } else {
+        while (true) {
+          const c = i <= 5;
+          rows.push([i, `${i} <= 5 → ${c}`, c ? "เข้า loop" : "ออกจาก loop", printed.join(" ")]);
+          if (!c) break;
+          printed.push(i); rows.push([i, "—", "พิมพ์ " + i + " แล้ว i++", printed.join(" ")]); i++;
+        }
+      }
+      shown = 0; body.innerHTML = ""; code.textContent = codes[t](s);
+      out.textContent = "กดถัดไปเพื่อเดินทีละขั้น"; next.disabled = false;
+    };
+    const step = () => {
+      if (shown >= rows.length) return;
+      const r = rows[shown++], tr = document.createElement("tr"); tr.className = "new";
+      tr.innerHTML = r.map(x => `<td>${x === "" ? "(ว่าง)" : x}</td>`).join("");
+      body.appendChild(tr);
+      if (shown === rows.length) { next.disabled = true; const last = rows[rows.length - 1][3]; out.textContent = "จบ ผลลัพธ์: " + (last || "(ไม่มีอะไรพิมพ์ออกมาเลย)"); }
+    };
+    next.addEventListener("click", step);
+    $("#ls-all").addEventListener("click", () => { while (shown < rows.length) step(); });
+    [lsType, lsStart].forEach(el => el.addEventListener("change", build));
+    build();
+  }
+
+  // ---------- Unit 4: off-by-one lab ----------
+  const obStart = $("#ob-start");
+  if (obStart) {
+    const op = $("#ob-op"), end = $("#ob-end"), code = $("#ob-code"), out = $("#ob-out");
+    const run = () => {
+      const s = Number(obStart.value), e = Number(end.value), o = op.value;
+      code.textContent = `for (int i = ${s}; i ${o} ${end.value === "" ? "?" : e}; i++)`;
+      if (end.value === "" || !Number.isInteger(e) || e > 200 || e < -50) { out.textContent = "ใส่ค่าสิ้นสุดเป็นจำนวนเต็ม -50 ถึง 200"; return; }
+      const vals = []; for (let i = s; o === "<" ? i < e : i <= e; i++) vals.push(i);
+      out.innerHTML = `วน <strong>${vals.length}</strong> รอบ` + (vals.length ? `: i = ${vals.length > 12 ? vals.slice(0, 5).join(", ") + ", …, " + vals.slice(-2).join(", ") : vals.join(", ")}` : " (ไม่เข้า loop เลย)");
+    };
+    [obStart, op, end].forEach(el => el.addEventListener("input", run));
+    run();
+  }
+
+  // ---------- Unit 4: triangle preview ----------
+  const triRows = $("#tri-rows");
+  if (triRows) {
+    const out = $("#tri-out"), lab = $("#tri-n");
+    const draw = () => {
+      const n = Number(triRows.value), up = $("input[name=tri-dir]:checked").value === "up";
+      lab.textContent = n; let s = "";
+      for (let i = 1; i <= n; i++) { const k = up ? i : n - i + 1; s += "* ".repeat(k).trimEnd() + "\n"; }
+      out.textContent = s;
+    };
+    triRows.addEventListener("input", draw);
+    $$("input[name=tri-dir]").forEach(r => r.addEventListener("change", draw));
+    draw();
+  }
+
+  // ---------- Unit 4: even/odd finder demo ----------
+  const eoBtn = $("#eo-find");
+  if (eoBtn) {
+    const lo = $("#eo-lo"), hi = $("#eo-hi"), out = $("#eo-out");
+    const warn = t => { out.innerHTML = `<span class="verdict-bad">แจ้งเตือน:</span> ${t}`; };
+    eoBtn.addEventListener("click", () => {
+      const a = lo.value.trim(), b = hi.value.trim();
+      if (!a || !b) return warn("กรอกขอบเขตล่างและขอบเขตบนให้ครบ");
+      if (!/^-?\d+$/.test(a) || !/^-?\d+$/.test(b)) return warn("ขอบเขตต้องเป็นจำนวนเต็ม");
+      const x = Number(a), y = Number(b);
+      if (y < x) return warn("ขอบเขตบนต้องไม่น้อยกว่าขอบเขตล่าง");
+      if (y - x > 2000) return warn("ช่วงกว้างเกินไปสำหรับตัวอย่างนี้ (ไม่เกิน 2000)");
+      const pick = $("input[name=eo-type]:checked");
+      if (!pick) return warn("เลือกเลขคู่หรือเลขคี่ก่อน");
+      const even = pick.value === "even", res = [];
+      for (let n = x; n <= y; n++) { if ((n % 2 === 0) === even) res.push(n); }
+      out.textContent = res.length ? res.join(" ") : "(ไม่มีตัวเลขที่ตรงเงื่อนไขในช่วงนี้)";
+    });
+    $("#eo-clear").addEventListener("click", () => {
+      lo.value = ""; hi.value = ""; out.textContent = "";
+      $$("input[name=eo-type]").forEach(r => (r.checked = false));
+    });
+  }
+
   // ---------- Exit ticket ----------
   $$("form[data-exit]").forEach(form => {
     const unit = form.dataset.exit, result = $(".exit-result", form), err = $(".form-error", form);

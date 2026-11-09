@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หน่วยที่ 4 คำสั่งวนซ้ำ | Java ฉบับลงมือทำ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Mitr:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html"><span data-javy></span>Java ฉบับลงมือทำ</a>
+  <button class="icon-btn" type="button" data-theme-toggle>โหมดมืด</button>
+</header>
+
+<div class="wrap unit-layout">
+  <nav class="toc" aria-label="สารบัญหน่วยที่ 4">
+    <details open>
+      <summary>ในหน่วยนี้</summary>
+      <ol>
+        <li><a href="#why">ทำไมต้องวนซ้ำ</a></li>
+        <li><a href="#step">ไล่ loop ทีละรอบ</a></li>
+        <li><a href="#demo">ทำตามครู</a></li>
+        <li><a href="#choose">เลือก loop ไหนดี</a></li>
+        <li><a href="#traps">กับดักที่เจอบ่อย</a></li>
+        <li><a href="#lab1">Lab 1 วาดสามเหลี่ยม</a></li>
+        <li><a href="#lab2">Lab 2 PIN 3 ครั้ง</a></li>
+        <li><a href="#task">งาน: เลขคู่/คี่ในช่วง</a></li>
+        <li><a href="#bug">ภารกิจหาบั๊ก</a></li>
+        <li><a href="#exit">Exit Ticket</a></li>
+      </ol>
+    </details>
+  </nav>
+
+  <main class="content">
+    <section class="unit-hero">
+      <h1>หน่วยที่ 4 คำสั่งวนซ้ำ</h1>
+      <p class="lead">ให้คอมพิวเตอร์ทำงานซ้ำแทนเรา จะ 10 รอบหรือ 10,000 รอบก็เขียนโค้ดไม่กี่บรรทัด หน่วยนี้ทวนสิ่งที่เคยเรียนมาแล้วต่อยอดให้ใช้เป็นในงานจริง</p>
+      <div class="goal">
+        <h3>จบหน่วยนี้แล้วทำได้</h3>
+        <ul>
+          <li>เลือกใช้ for, while และ do-while ได้ถูกงาน</li>
+          <li>ใช้ break, continue และ loop ซ้อน</li>
+          <li>เขียน loop สะสมค่า หาผลรวม ค่าเฉลี่ย ค่ามากสุด</li>
+          <li>หาบั๊ก loop ไม่รู้จบ และ off-by-one ได้</li>
+        </ul>
+      </div>
+      <ol class="phases" aria-label="ลำดับในคาบ">
+        <li><strong>ทำตามครู</strong><small>พิมพ์ตามทีละคำสั่ง</small></li>
+        <li><strong>Lab พาทำ</strong><small>สามเหลี่ยม และ PIN</small></li>
+        <li><strong>งานเดี่ยว</strong><small>เลขคู่/คี่ในช่วง</small></li>
+        <li><strong>Exit Ticket</strong><small>ก่อนออกจากคาบ</small></li>
+      </ol>
+    </section>
+
+    <section id="why">
+      <h2>ทำไมต้องวนซ้ำ</h2>
+      <p>ถ้าอยากพิมพ์เลข 1 ถึง 100 โดยไม่มี loop ต้องเขียน <code>println</code> 100 บรรทัด ถ้ามี loop เขียนแค่ 3 บรรทัด loop ทุกแบบมี 3 ส่วนเหมือนกัน ถ้าขาดส่วนไหน loop จะพัง</p>
+      <div class="table-scroll"><table>
+        <thead><tr><th>ส่วน</th><th>หน้าที่</th><th>ตัวอย่าง</th></tr></thead>
+        <tbody>
+          <tr><td>ค่าเริ่มต้น</td><td>ตัวนับเริ่มที่เท่าไร</td><td><code>int i = 1;</code></td></tr>
+          <tr><td>เงื่อนไข</td><td>วนต่อเมื่อไหร่ ถ้าเป็นเท็จก็ออก</td><td><code>i &lt;= 10</code></td></tr>
+          <tr><td>การเปลี่ยนค่า</td><td>ขยับตัวนับเข้าใกล้จุดจบ</td><td><code>i++</code></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="step">
+      <h2>ไล่ loop ทีละรอบ</h2>
+      <p>นี่คือตาราง trace แบบที่ครูเขียนบนกระดาน ลองเริ่มที่ 1 ก่อน แล้วเปลี่ยนเป็น 6 เทียบ while กับ do-while</p>
+      <div class="lab">
+        <h3>Loop Stepper</h3>
+        <div class="row">
+          <label>แบบ <select id="ls-type"><option value="while">while</option><option value="do">do-while</option><option value="for">for</option></select></label>
+          <label>เริ่ม i = <select id="ls-start"><option>1</option><option>4</option><option>6</option></select></label>
+        </div>
+        <div class="code"><pre id="ls-code"></pre></div>
+        <div class="row">
+          <button class="btn" type="button" id="ls-next">ถัดไป</button>
+          <button class="btn ghost" type="button" id="ls-all">ดูทั้งหมด</button>
+        </div>
+        <div class="table-scroll" style="margin-top:.75rem"><table class="trace-table">
+          <thead><tr><th>i</th><th>เงื่อนไข</th><th>ทำอะไร</th><th>output</th></tr></thead>
+          <tbody id="ls-body"></tbody>
+        </table></div>
+        <div class="out" id="ls-out" aria-live="polite"></div>
+      </div>
+      <p>เริ่มที่ 6 แล้ว while ไม่พิมพ์อะไรเลย เพราะตรวจเงื่อนไขก่อน แต่ do-while พิมพ์ 6 ออกมา 1 ครั้ง เพราะ<strong>ทำก่อนแล้วค่อยตรวจ</strong> นี่คือความต่างเดียวของสองแบบนี้</p>
+    </section>
+
+    <section id="demo">
+      <span class="phase-tag">ช่วงที่ 1 ทำตามครู</span>
+      <h2>ทำตามครูทีละคำสั่ง</h2>
+      <p>สร้าง package <code>th.ac.loeitech.unit4</code> แล้วสร้างคลาส <code>LoopDemo</code> ที่มีเมธอด main พิมพ์โค้ดแต่ละขั้นลงใน main แล้วรันดูผลที่หน้าต่าง Output</p>
+
+      <div class="demo-step">
+        <h3>ขั้น 1 while</h3>
+        <div class="code"><pre><code>int i = 1;
+while (i &lt;= 10) {
+    System.out.print(i + " ");
+    i++;
+}
+System.out.println();</code></pre></div>
+        <p>ผลลัพธ์ <code>1 2 3 4 5 6 7 8 9 10</code> ลองลบ <code>i++</code> ออกแล้วรัน จะเกิดอะไรขึ้น หยุดโปรแกรมด้วยปุ่มสี่เหลี่ยมแดงข้างหน้าต่าง Output</p>
+      </div>
+
+      <div class="demo-step">
+        <h3>ขั้น 2 for</h3>
+        <p>งานเดียวกัน แต่รวม 3 ส่วนไว้ในบรรทัดเดียว อ่านง่ายกว่าเมื่อรู้จำนวนรอบแน่นอน</p>
+        <div class="code"><pre><code>for (int i = 1; i &lt;= 10; i++) {
+    System.out.print(i + " ");
+}
+System.out.println();</code></pre></div>
+      </div>
+
+      <div class="demo-step">
+        <h3>ขั้น 3 do-while</h3>
+        <p>เปลี่ยนค่าเริ่มเป็น 11 แล้วเทียบกับ while ที่เริ่ม 11 เหมือนกัน</p>
+        <div class="code"><pre><code>int i = 11;
+do {
+    System.out.print(i + " ");
+    i++;
+} while (i &lt;= 10);   // อย่าลืม ; ท้าย while</code></pre></div>
+        <p>do-while พิมพ์ 11 ออกมา 1 ครั้ง ส่วน while ไม่พิมพ์อะไร</p>
+      </div>
+
+      <div class="demo-step">
+        <h3>ขั้น 4 break และ continue</h3>
+        <div class="code"><pre><code>// break: เจอแล้วออกจาก loop ทันที
+for (int n = 50; n &lt;= 100; n++) {
+    if (n % 7 == 0) {
+        System.out.println("เลขแรกที่หาร 7 ลงตัว: " + n);
+        break;
+    }
+}
+
+// continue: ข้ามรอบนี้ ไปรอบถัดไป
+for (int n = 1; n &lt;= 10; n++) {
+    if (n % 2 != 0) {
+        continue;
+    }
+    System.out.print(n + " ");   // 2 4 6 8 10
+}</code></pre></div>
+      </div>
+
+      <div class="demo-step">
+        <h3>ขั้น 5 loop ซ้อน</h3>
+        <p>loop ในทำงานจนครบทุกรอบ ก่อนที่ loop นอกจะขยับไป 1 รอบ</p>
+        <div class="code"><pre><code>for (int i = 1; i &lt;= 3; i++) {        // 3 แถว
+    for (int j = 1; j &lt;= 5; j++) {    // แถวละ 5 ดาว
+        System.out.print("*");
+    }
+    System.out.println();
+}</code></pre></div>
+        <p>เปลี่ยน <code>j &lt;= 5</code> เป็น <code>j &lt;= i</code> แล้วรันใหม่ จะได้สามเหลี่ยม ซึ่งเป็นพื้นฐานของ Lab 1</p>
+      </div>
+
+      <div class="demo-step">
+        <h3>ขั้น 6 สะสมค่า</h3>
+        <p>แพทเทิร์นที่ใช้บ่อยที่สุดในงานจริง ประกาศตัวสะสม<strong>นอก</strong> loop แล้วอัปเดตใน loop</p>
+        <div class="code"><pre><code>int sum = 0;
+int max = Integer.MIN_VALUE;
+for (int k = 1; k &lt;= 5; k++) {
+    int n = Integer.parseInt(JOptionPane.showInputDialog("ตัวเลขตัวที่ " + k));
+    sum += n;
+    if (n &gt; max) {
+        max = n;
+    }
+}
+double avg = (double) sum / 5;
+JOptionPane.showMessageDialog(null, "ผลรวม " + sum + " เฉลี่ย " + avg + " มากสุด " + max);</code></pre></div>
+        <p><code>Integer.MIN_VALUE</code> คือค่าน้อยที่สุดของ int ตัวเลขแรกที่กรอกจึงมากกว่าแน่นอน ถ้าเริ่ม <code>max = 0</code> แล้วกรอกแต่เลขติดลบ จะได้คำตอบผิด</p>
+      </div>
+    </section>
+
+    <section id="choose">
+      <h2>เลือก loop ไหนดี</h2>
+      <div class="choose">
+        <div><strong>for</strong>รู้จำนวนรอบแน่นอน เช่น วน 10 ครั้ง, วนตามช่วงตัวเลข</div>
+        <div><strong>while</strong>ไม่รู้จำนวนรอบ วนจนกว่าเงื่อนไขจะเปลี่ยน เช่น รับค่าจนกว่าผู้ใช้กดยกเลิก</div>
+        <div><strong>do-while</strong>ต้องทำอย่างน้อย 1 ครั้งก่อนตรวจ เช่น ถามรหัส PIN</div>
+      </div>
+      <div class="lab">
+        <h3>ห้องทดลอง off-by-one</h3>
+        <p style="margin:0 0 .5rem">บั๊กวนเกินหรือขาด 1 รอบ เจอบ่อยที่สุดในการเขียน loop ลองปรับแล้วดูจำนวนรอบ</p>
+        <div class="row">
+          <label>เริ่ม <select id="ob-start"><option>0</option><option selected>1</option></select></label>
+          <label>เงื่อนไข <select id="ob-op"><option>&lt;</option><option selected>&lt;=</option></select></label>
+          <label>สิ้นสุด <input type="number" id="ob-end" value="10" style="width:5.5rem"></label>
+        </div>
+        <div class="code"><pre id="ob-code"></pre></div>
+        <div class="out" id="ob-out" aria-live="polite"></div>
+        <p style="margin:.75rem 0 0;font-size:.95rem">จำไว้: <code>i = 0; i &lt; 10</code> และ <code>i = 1; i &lt;= 10</code> ได้ 10 รอบเท่ากัน แต่ค่า i ต่างกัน</p>
+      </div>
+    </section>
+
+    <section id="traps">
+      <h2>กับดักที่เจอบ่อย</h2>
+      <details class="reveal">
+        <summary>ลืม <code>i++</code> ใน while</summary>
+        <p>i ไม่เคยเปลี่ยน เงื่อนไขจริงตลอดไป เกิด <strong>loop ไม่รู้จบ</strong> โปรแกรมค้าง ใน NetBeans กดปุ่มสี่เหลี่ยมแดงข้างหน้าต่าง Output หรือเมนู Run > Stop Build/Run</p>
+      </details>
+      <details class="reveal">
+        <summary><code>for (int i = 1; i &lt;= 10; i++); { print(i); }</code></summary>
+        <p><code>;</code> หลังวงเล็บทำให้ loop วนตัวเปล่า 10 รอบ แล้วบล็อกข้างหลังทำงานแค่ครั้งเดียว ในกรณีนี้คอมไพล์ไม่ผ่านด้วย เพราะ i หมดขอบเขตไปแล้ว</p>
+      </details>
+      <details class="reveal">
+        <summary>ประกาศ <code>int sum = 0;</code> ไว้ข้างใน loop</summary>
+        <p>sum ถูกสร้างใหม่และกลับเป็น 0 ทุกรอบ และใช้นอก loop ไม่ได้ ตัวสะสมต้องประกาศก่อนเข้า loop เสมอ (ทวนเรื่องขอบเขตตัวแปรหน่วย 2)</p>
+      </details>
+      <details class="reveal">
+        <summary><code>for (int i = 0; i != 10; i += 3)</code></summary>
+        <p>i เป็น 0, 3, 6, 9, 12, ... ไม่มีวันเท่ากับ 10 พอดี loop จึงไม่จบ ใช้ <code>&lt;</code> หรือ <code>&lt;=</code> ปลอดภัยกว่า <code>!=</code></p>
+      </details>
+    </section>
+
+    <section id="lab1">
+      <span class="phase-tag">ช่วงที่ 2 Lab พาทำ</span>
+      <h2>Lab 1 วาดสามเหลี่ยม</h2>
+      <p>ฝึก loop ซ้อนกับ GUI รอบนี้ฝึกตั้งชื่อคอมโพเนนต์ให้อ่านง่ายด้วย</p>
+      <div class="lab">
+        <h3>ผลลัพธ์ที่ต้องได้</h3>
+        <div class="row">
+          <label>จำนวนแถว <input type="range" id="tri-rows" min="1" max="10" value="5"> <span id="tri-n">5</span></label>
+          <label><input type="radio" name="tri-dir" value="up" checked> แหลมขึ้น</label>
+          <label><input type="radio" name="tri-dir" value="down"> แหลมลง</label>
+        </div>
+        <div class="stars" id="tri-out" aria-live="polite"></div>
+      </div>
+      <ol>
+        <li>สร้าง JFrame Form ชื่อ <code>TriangleDrawer</code> ใน package <code>th.ac.loeitech.unit4</code></li>
+        <li>วาง Label "จำนวนแถว", TextField, <strong>Radio Button</strong> 2 ตัว (แหลมขึ้น, แหลมลง), ปุ่ม "วาด", ปุ่ม "ล้าง" และ Text Area</li>
+        <li>ลาก <strong>Button Group</strong> จาก Palette มาวางบนฟอร์ม แล้วที่ Radio Button แต่ละตัวตั้ง Properties ช่อง buttonGroup เป็น <code>buttonGroup1</code> ทำให้เลือกได้ทีละอันเดียว</li>
+        <li>เปลี่ยนชื่อคอมโพเนนต์: คลิกขวา > Change Variable Name ตั้งเป็น <code>txtRow</code>, <code>rdoUp</code>, <code>rdoDown</code>, <code>btnDraw</code>, <code>btnClear</code>, <code>txtOutput</code></li>
+        <li>ดับเบิลคลิกปุ่ม "วาด" แล้วพิมพ์โค้ด</li>
+      </ol>
+      <div class="code"><pre><code>private void btnDrawActionPerformed(java.awt.event.ActionEvent evt) {
+    int row = Integer.parseInt(txtRow.getText());
+    txtOutput.setText("");                 // ล้างรูปเก่าก่อนวาดใหม่
+    if (rdoUp.isSelected()) {
+        for (int i = 1; i &lt;= row; i++) {
+            for (int j = 1; j &lt;= i; j++) {
+                txtOutput.append("* ");
+            }
+            txtOutput.append("\n");
+        }
+    }
+}</code></pre></div>
+      <ol start="6">
+        <li>ดับเบิลคลิกปุ่ม "ล้าง" แล้วพิมพ์โค้ด</li>
+      </ol>
+      <div class="code"><pre><code>private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {
+    txtRow.setText("");
+    txtOutput.setText("");
+    buttonGroup1.clearSelection();
+}</code></pre></div>
+      <ol start="7">
+        <li>รัน ใส่ 5 เลือกแหลมขึ้น กดวาดสองครั้ง รูปต้องไม่ซ้อนกัน</li>
+        <li>ตั้ง breakpoint ที่บรรทัด <code>txtOutput.append("* ");</code> แล้ว Debug File ดูค่า i และ j ในหน้าต่าง Variables ทุกครั้งที่กด F8</li>
+        <li><strong>ทำเอง:</strong> เพิ่มโค้ดให้วาดแหลมลงเมื่อเลือก <code>rdoDown</code></li>
+      </ol>
+      <details class="reveal">
+        <summary>คำใบ้แหลมลง</summary>
+        <p>ใช้ <code>else if (rdoDown.isSelected())</code> แล้วให้ loop นอกนับถอยหลัง <code>for (int i = row; i &gt;= 1; i--)</code> loop ในเหมือนเดิมทุกอย่าง</p>
+      </details>
+      <div class="note"><p>ทำไมใช้ <code>append</code> แทน <code>setText(getText() + "* ")</code> แบบใบงานเดิม? แบบเดิมต้องดึงข้อความทั้งหมดออกมาแล้วสร้างใหม่ทุกดาว ยิ่งรูปใหญ่ยิ่งช้า ส่วน append แค่ต่อท้าย</p></div>
+    </section>
+
+    <section id="lab2">
+      <h2>Lab 2 ใส่ PIN ได้ 3 ครั้ง</h2>
+      <p>งานที่เหมาะกับ do-while เพราะต้องถามอย่างน้อย 1 ครั้งเสมอ สร้างคลาส <code>PinCheck</code> ที่มี main</p>
+      <div class="code"><pre><code>final String CORRECT_PIN = "1234";
+final int MAX_TRIES = 3;
+int tries = 0;
+boolean unlocked = false;
+
+do {
+    String pin = JOptionPane.showInputDialog("ใส่ PIN (เหลือ " + (MAX_TRIES - tries) + " ครั้ง)");
+    tries++;
+    if (CORRECT_PIN.equals(pin)) {
+        unlocked = true;
+    } else {
+        JOptionPane.showMessageDialog(null, "PIN ไม่ถูกต้อง");
+    }
+} while (!unlocked &amp;&amp; tries &lt; MAX_TRIES);
+
+if (unlocked) {
+    JOptionPane.showMessageDialog(null, "ยินดีต้อนรับ");
+} else {
+    JOptionPane.showMessageDialog(null, "ผิดครบ " + MAX_TRIES + " ครั้ง บัตรถูกล็อก");
+}</code></pre></div>
+      <ul>
+        <li>ทดสอบ 3 กรณี: ถูกครั้งแรก, ถูกครั้งที่ 3, ผิดครบ 3 ครั้ง</li>
+        <li>ตั้ง breakpoint ที่บรรทัด <code>tries++</code> แล้วดูค่า <code>tries</code> กับ <code>unlocked</code> ในแต่ละรอบ</li>
+      </ul>
+      <details class="reveal">
+        <summary>คำถามชวนคิด: ทำไมใช้ <code>CORRECT_PIN.equals(pin)</code> ไม่ใช้ <code>pin.equals(CORRECT_PIN)</code></summary>
+        <p>ถ้ากด Cancel <code>pin</code> จะเป็น <code>null</code> แล้ว <code>pin.equals(...)</code> จะพัง แต่ <code>"1234".equals(null)</code> แค่ได้ false เอาค่าคงที่ไว้หน้าจึงปลอดภัยกว่า</p>
+      </details>
+    </section>
+
+    <section id="task">
+      <span class="phase-tag">ช่วงที่ 3 งานเดี่ยว</span>
+      <h2>งาน: แสดงเลขคู่/คี่ตามช่วงที่กำหนด</h2>
+      <p>ทำเองคนเดียว ลองเล่นตัวอย่างก่อน แล้วสร้างให้ทำงานแบบเดียวกัน รวมถึงข้อความแจ้งเตือนทุกกรณี</p>
+      <div class="lab">
+        <h3>ตัวอย่างที่ต้องทำให้ได้</h3>
+        <div class="row">
+          <label>ขอบเขตล่าง <input type="text" id="eo-lo" inputmode="numeric" style="width:5rem"></label>
+          <label>ขอบเขตบน <input type="text" id="eo-hi" inputmode="numeric" style="width:5rem"></label>
+          <label><input type="radio" name="eo-type" value="even"> เลขคู่</label>
+          <label><input type="radio" name="eo-type" value="odd"> เลขคี่</label>
+        </div>
+        <div class="row" style="margin-top:.5rem">
+          <button class="btn" type="button" id="eo-find">ค้นหา</button>
+          <button class="btn ghost" type="button" id="eo-clear">ล้าง</button>
+        </div>
+        <div class="out" id="eo-out" aria-live="polite"></div>
+        <p style="margin:.75rem 0 0;font-size:.95rem">ลอง 5–25 เลขคู่ (ต้องได้ 6 8 10 ... 24), ปล่อยช่องว่าง, ใส่บนน้อยกว่าล่าง, ไม่เลือกคู่/คี่, และช่วง -5 ถึง 5</p>
+      </div>
+
+      <h3>ขั้นตอนและเกณฑ์ตรวจ</h3>
+      <div class="progress" data-progress="unit4"><span></span></div>
+      <ul class="checklist" data-checklist="unit4">
+        <li><input type="checkbox" id="u4c1"><label for="u4c1">1. สร้าง JFrame Form ชื่อ <code>EvenOddFinder</code> ใน package <code>th.ac.loeitech.unit4</code></label></li>
+        <li><input type="checkbox" id="u4c2"><label for="u4c2">2. วาง TextField ขอบเขตล่าง/บน, Radio Button เลขคู่/เลขคี่ ใน Button Group เดียวกัน, ปุ่มค้นหา, ปุ่มล้าง และ Text Area</label></li>
+        <li><input type="checkbox" id="u4c3"><label for="u4c3">3. ตั้งชื่อคอมโพเนนต์ให้สื่อความหมาย เช่น <code>txtLower</code>, <code>rdoEven</code>, <code>btnFind</code></label></li>
+      </ul>
+      <p class="teacher-stop">หยุด เรียกครูตรวจขั้น 1–3</p>
+      <ul class="checklist" data-checklist="unit4">
+        <li><input type="checkbox" id="u4c4"><label for="u4c4">4. ปุ่มค้นหา: ถ้าช่องใดว่าง (<code>isBlank()</code>) แจ้งเตือนแล้ว <code>return;</code> ไม่ทำต่อ</label></li>
+        <li><input type="checkbox" id="u4c5"><label for="u4c5">5. แปลงเป็น int แล้วถ้าขอบเขตบนน้อยกว่าล่าง แจ้งเตือนแล้ว <code>return;</code></label></li>
+        <li><input type="checkbox" id="u4c6"><label for="u4c6">6. ถ้ายังไม่เลือกเลขคู่หรือเลขคี่ แจ้งเตือนแล้ว <code>return;</code></label></li>
+        <li><input type="checkbox" id="u4c7"><label for="u4c7">7. วน loop จากขอบเขตล่างถึงบน แสดงเฉพาะเลขที่ตรงกับตัวเลือก ด้วย <code>append</code></label></li>
+      </ul>
+      <p class="teacher-stop">หยุด เรียกครูตรวจขั้น 4–7</p>
+      <ul class="checklist" data-checklist="unit4">
+        <li><input type="checkbox" id="u4c8"><label for="u4c8">8. ปุ่มล้าง: ล้างทั้งสองช่อง ช่องแสดงผล และยกเลิกการเลือกด้วย <code>buttonGroup1.clearSelection()</code></label></li>
+        <li><input type="checkbox" id="u4c9"><label for="u4c9">9. ทดสอบครบ: 5–25 คู่, 5–25 คี่, 10–10, -5 ถึง 5 คี่, ช่องว่าง, บนน้อยกว่าล่าง, ไม่เลือกตัวเลือก</label></li>
+        <li><input type="checkbox" id="u4c10"><label for="u4c10">10. บันทึก แคปหน้าจออย่างน้อย 3 กรณี และ zip โปรเจกต์ส่ง</label></li>
+      </ul>
+
+      <h3>คำใบ้</h3>
+      <details class="reveal">
+        <summary>คำใบ้ 1: ตรวจเลขคู่/คี่ยังไง</summary>
+        <p>เลขคู่ใช้ <code>n % 2 == 0</code> ส่วนเลขคี่ให้ใช้ <code>n % 2 != 0</code> <strong>อย่าใช้</strong> <code>n % 2 == 1</code> เพราะใน Java <code>-3 % 2</code> ได้ <code>-1</code> เลขคี่ติดลบจะหายไปหมด (ทวนห้องทดลองการหารในหน่วย 2)</p>
+      </details>
+      <details class="reveal">
+        <summary>คำใบ้ 2: โครงของปุ่มค้นหา</summary>
+        <div class="code"><pre><code>if (ช่องใดว่าง) { แจ้งเตือน; return; }
+int lower = ..., upper = ...;
+if (upper &lt; lower) { แจ้งเตือน; return; }
+if (ไม่ได้เลือกทั้งคู่และคี่) { แจ้งเตือน; return; }
+txtOutput.setText("");
+for (int n = lower; n &lt;= upper; n++) {
+    if (เลือกคู่ และ n เป็นเลขคู่ หรือ เลือกคี่ และ n เป็นเลขคี่) {
+        txtOutput.append(n + " ");
+    }
+}</code></pre></div>
+      </details>
+      <div class="note">
+        <p><strong>งานเสริม 1</strong> ทำแบบไม่ต้องใช้ if ใน loop: หาเลขตัวแรกที่ตรงเงื่อนไข แล้ว <code>n += 2</code> แทน <code>n++</code> แบบไหนวนน้อยรอบกว่า และแบบไหนเขียนผิดง่ายกว่า</p>
+        <p><strong>งานเสริม 2</strong> สรุปคะแนนทั้งห้อง: รับคะแนนด้วย JOptionPane วนด้วย while จนกว่ากด Cancel แล้วแสดงจำนวนคน ค่าเฉลี่ย สูงสุด ต่ำสุด และจำนวนคนที่ได้ 50 ขึ้นไป อย่าลืมกรณีไม่มีใครกรอกเลย</p>
+      </div>
+    </section>
+
+    <section id="bug">
+      <h2>ภารกิจหาบั๊ก</h2>
+      <p>โปรแกรมนี้ตั้งใจรับคะแนน 5 คนแล้วหาค่าเฉลี่ย คอมไพล์ผ่าน แต่มีบั๊ก 2 จุด</p>
+      <div class="code"><pre><code>int sum = 0;
+int count = 0;
+int i = 1;
+while (i &lt;= 5) {
+    int score = Integer.parseInt(JOptionPane.showInputDialog("คะแนนคนที่ " + i));
+    sum += score;
+    count++;
+}
+double avg = sum / count;
+JOptionPane.showMessageDialog(null, "ค่าเฉลี่ย " + avg);</code></pre></div>
+      <details class="reveal">
+        <summary>เฉลยบั๊ก</summary>
+        <p><strong>บั๊ก 1:</strong> ไม่มี <code>i++</code> ใน loop โปรแกรมจะถาม "คะแนนคนที่ 1" ไปเรื่อย ๆ ไม่จบ</p>
+        <p><strong>บั๊ก 2:</strong> <code>sum / count</code> เป็น int หาร int เศษทศนิยมหายก่อนเก็บลง double แก้เป็น <code>(double) sum / count</code></p>
+      </details>
+    </section>
+
+    <section id="exit">
+      <span class="phase-tag">ช่วงที่ 4</span>
+      <h2>Exit Ticket</h2>
+      <p>ทำก่อนออกจากคาบ ใช้เวลาประมาณ 3 นาที กดตรวจแล้วคัดลอกผลส่งครู</p>
+      <form class="exit" data-exit="unit4" data-title="หน่วยที่ 4" data-form-url="" novalidate>
+        <div class="who">
+          <label>ชื่อ-สกุล<input type="text" name="name" autocomplete="name"></label>
+          <label>รหัสนักศึกษา<input type="text" name="sid" inputmode="numeric"></label>
+          <label>ห้อง<input type="text" name="room"></label>
+        </div>
+
+        <fieldset data-correct="b" data-explain="i เป็น 0, 1, 2, 3, 4 รวม 5 รอบ พอ i เป็น 5 เงื่อนไข 5 &lt; 5 เป็นเท็จ">
+          <legend>1. <code>for (int i = 0; i &lt; 5; i++)</code> วนกี่รอบ</legend>
+          <label class="opt"><input type="radio" name="q1" value="a">4</label>
+          <label class="opt"><input type="radio" name="q1" value="b">5</label>
+          <label class="opt"><input type="radio" name="q1" value="c">6</label>
+          <label class="opt"><input type="radio" name="q1" value="d">ไม่รู้จบ</label>
+        </fieldset>
+
+        <fieldset data-correct="c" data-explain="do-while ทำก่อนตรวจ จึงพิมพ์ 6 ออกมา 1 ครั้ง แล้วพอตรวจ 7 &lt;= 5 เป็นเท็จก็ออก">
+          <legend>2. <code>int i = 6; do { print(i); i++; } while (i &lt;= 5);</code> พิมพ์อะไร</legend>
+          <label class="opt"><input type="radio" name="q2" value="a">ไม่พิมพ์อะไรเลย</label>
+          <label class="opt"><input type="radio" name="q2" value="b">1 2 3 4 5</label>
+          <label class="opt"><input type="radio" name="q2" value="c">6</label>
+          <label class="opt"><input type="radio" name="q2" value="d">6 7 8 ... ไม่รู้จบ</label>
+        </fieldset>
+
+        <fieldset data-correct="a" data-explain="continue ข้ามรอบที่ n หาร 3 ลงตัว คือ 3 และ 6">
+          <legend>3. <code>for (n = 1; n &lt;= 6; n++) { if (n % 3 == 0) continue; print(n); }</code> พิมพ์อะไร</legend>
+          <label class="opt"><input type="radio" name="q3" value="a">1 2 4 5</label>
+          <label class="opt"><input type="radio" name="q3" value="b">1 2</label>
+          <label class="opt"><input type="radio" name="q3" value="c">3 6</label>
+          <label class="opt"><input type="radio" name="q3" value="d">1 2 3 4 5 6</label>
+        </fieldset>
+
+        <fieldset data-correct="d" data-explain="loop นอก 3 รอบ แต่ละรอบ loop ในวน 4 รอบ รวม 3 × 4 = 12">
+          <legend>4. loop นอก <code>i</code> = 1 ถึง 3 และ loop ใน <code>j</code> = 1 ถึง 4 พิมพ์ * ใน loop ใน ได้ * ทั้งหมดกี่ตัว</legend>
+          <label class="opt"><input type="radio" name="q4" value="a">4</label>
+          <label class="opt"><input type="radio" name="q4" value="b">7</label>
+          <label class="opt"><input type="radio" name="q4" value="c">9</label>
+          <label class="opt"><input type="radio" name="q4" value="d">12</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>5. วันนี้ได้เรียนรู้อะไร (1 ประโยค)</legend>
+          <textarea name="learned" rows="2"></textarea>
+        </fieldset>
+        <fieldset>
+          <legend>6. ยังสงสัยหรือติดขัดตรงไหน</legend>
+          <textarea name="muddy" rows="2"></textarea>
+        </fieldset>
+        <fieldset>
+          <legend>7. มั่นใจแค่ไหนว่าทำงานเลขคู่/คี่เองได้ (1 = ยังไม่ได้เลย, 5 = สอนเพื่อนได้)</legend>
+          <div class="fist">
+            <label><input type="radio" name="fist" value="1">1</label>
+            <label><input type="radio" name="fist" value="2">2</label>
+            <label><input type="radio" name="fist" value="3">3</label>
+            <label><input type="radio" name="fist" value="4">4</label>
+            <label><input type="radio" name="fist" value="5">5</label>
+          </div>
+        </fieldset>
+
+        <button class="btn" type="submit">ตรวจคำตอบ</button>
+        <p class="form-error" role="alert"></p>
+        <div class="exit-result" hidden></div>
+      </form>
+      <p><a href="unit3.html">กลับไปทบทวนหน่วยที่ 3</a></p>
+    </section>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

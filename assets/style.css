@@ -227,3 +227,13 @@ a.btn { text-decoration: none; display: inline-block; }
 .game .tries i { width: 1.1rem; height: 1.1rem; border-radius: 50%; background: var(--brand); display: inline-block; }
 .game .tries i.used { background: var(--line); }
 .teacher-stop { text-align: center; font-weight: 600; color: var(--bad); border: 1.5px dashed var(--bad); border-radius: 10px; padding: .4rem; margin: .5rem 0; }
+
+/* unit 4: trace table, star canvas */
+.trace-table td, .trace-table th { font-family: var(--font-code); font-size: .88rem; text-align: center; }
+.trace-table tr.new { animation: pop .35s ease-out; }
+@keyframes pop { from { background: rgba(111, 214, 164, .45); } to { background: transparent; } }
+.stars { font-family: var(--font-code); background: var(--code-bg); color: var(--code-ink); border-radius: 14px; padding: 1rem 1.25rem; min-height: 4rem; white-space: pre; overflow-x: auto; line-height: 1.5; margin-top: .75rem; }
+.choose { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: 0 0 1.25rem; }
+.choose div { border-radius: 14px; padding: .8rem 1rem; background: var(--lav-soft); }
+.choose strong { display: block; font-family: var(--font-code); font-size: 1.1rem; color: var(--brand); }
+@media (max-width: 600px) { .choose { grid-template-columns: 1fr; } }
